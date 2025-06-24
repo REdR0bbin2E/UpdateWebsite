@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { AnimatePresence, motion } from 'framer-motion'
 import FuuzynImage from '../src/assets/Roblox-avatars/FuuzynT.webp'
 import RedRobbin23Image from '../src/assets/Roblox-avatars/RedRobbin23T.webp'
 import MagpineImage from '../src/assets/Roblox-avatars/MagpineT.webp'
@@ -13,10 +14,10 @@ import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
 const developers = [{
   name: "Kirin", roles: ["Scripting", "Sound Design"], profilePicture: WhyKirinImage
 },
-{ name: "Aka", roles: ["Scripting", "Building"], profilePicture: RedRobbin23Image },
+{ name: "Red", roles: ["Scripting", "Building"], profilePicture: RedRobbin23Image },
 { name: "Tripp", roles: ["Building", "Data Storing"], profilePicture: PurpTrippImage },
 { name: "Rail", roles: ["VFX", "Decals"], profilePicture: RaillizeImage },
-{ name: "Magpine", roles: ["Animations", "Sound Design"], profilePicture: MagpineImage },
+{ name: "Mag", roles: ["Animations", "Sound Design"], profilePicture: MagpineImage },
 { name: "Fuze", roles: ["3D Modeling", "Animations"], profilePicture: FuuzynImage }];
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
 
           {/*Add calendar component here*/}
 
-          <button style={{ marginBottom: "5%", width: "50%" }}>Go</button>  {/*Button that redirects to date selected */}
+          <motion.button whileHover={{ backgroundColor: "#646cff" }} style={{ marginBottom: "5%", width: "50%" }}>Go</motion.button>  {/*Button that redirects to date selected */}
 
         </div>
 
@@ -50,7 +51,7 @@ function App() {
         }}>
           {developers.map((_, index) => (
 
-            <button className='BackgroundDeveloper'
+            <motion.button whileHover={{ scale: 1.1 }} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} className='BackgroundDeveloper'
               key={index}
               style={{
                 width: "48%",
@@ -76,7 +77,7 @@ function App() {
               </ul>
 
               <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
-            </button>
+            </motion.button>
 
 
           ))}
