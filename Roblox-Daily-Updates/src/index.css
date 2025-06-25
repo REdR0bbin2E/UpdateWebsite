@@ -6,7 +6,9 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #646cffaa;
-  background-image: linear-gradient(to right, #646cffaa, #989bdbaa);
+  background-size: 600% 600%;
+  background-image: linear-gradient(to left, #000000, #a70707aa, #067d33aa, #070b51aa, #989bdbaa);
+  animation: background-change 30s ease infinite;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,6 +21,37 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
+
+
+
+@keyframes background-change {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  25% {
+    background-position: 25% 75%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  75% {
+    background-position: 75% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+
+
+
 
 a:hover {
   color: #535bf2;
@@ -54,6 +87,7 @@ button {
 
 button:hover {
   border-color: #fcfcfc;
+
 }
 
 button:focus,
