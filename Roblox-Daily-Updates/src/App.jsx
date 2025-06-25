@@ -10,7 +10,7 @@ import WhyKirinImage from '../src/assets/Roblox-avatars/WhyKirinT.webp'
 import RaillizeImage from '../src/assets/Roblox-avatars/RaillizeT.webp'
 import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
 
-
+{/*Putting current user here so that I can make it a promp in <MyModal> */ }
 const MyModal = ({ isOpen, onClose, children, currentUser }) => (
   <AnimatePresence>
     {isOpen && (
@@ -61,7 +61,45 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
             X
           </motion.button>
 
-          <h2>{currentUser}</h2>
+          <h2 style={{ position: "relative", top: "-22%" }}>{currentUser}'s Update Log</h2>
+
+          <motion.div style={{ top: "25%", width: "90%", height: "55%", background: "rgba(0, 0, 0, 0.6)", borderRadius: 50, border: "4px solid black", position: "absolute" }}>
+
+
+
+            {developers.map((_, index) => (
+
+              <motion.button whileHover={{ scale: 1.1 }} initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} className='BackgroundDeveloper'
+                key={index}
+                style={{
+                  width: "15%",
+
+                  height: "50%",
+                  marginTop: "14%",
+                  fontWeight: "bold",
+                  padding: "1rem",
+                  flexDirection: "row",
+                  textAlign: "left",
+                  justifyContent: "space-between",
+                  border: "6px solid black",
+                  alignItems: "left",
+
+                }}
+              >
+
+                <h3 style={{ marginLeft: "15%", top: "-85%", position: "relative" }}>06/07/2006</h3>
+
+
+
+              </motion.button>
+
+
+
+
+            ))}
+
+
+          </motion.div>
 
           {children}
         </motion.div>
@@ -69,7 +107,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
       </motion.div>
 
     )}
-  </AnimatePresence>
+  </AnimatePresence >
 )
 
 
@@ -132,16 +170,19 @@ function App() {
 
 
 
-        <h1>DAILY UPDATES</h1>
-        <p>contribute daily updates by text and images keep reports detailed </p>
+        <h1>Raq Development HQ</h1>
+        <p style={{ fontSize: 20 }}>contribute daily updates by text and images! </p>
 
 
         <div>
 
           {/*Add calendar component here*/}
+          <div style={{ marginTop: "10%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
+            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid blue", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
 
-          <motion.button whileHover={{ backgroundColor: "#000a" }} style={{ marginBottom: "5%", width: "50%" }}>Go</motion.button>  {/*Button that redirects to date selected */}
 
+            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid green", borderLeft: 20, borderTop: 20 }}>All Update!</motion.button>  {/*Button that redirects to date selected */}
+          </div>
           <MyModal currentUser={currentUser} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
 
             <div>
@@ -273,15 +314,20 @@ function App() {
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
             <h1 className='Contributors' style={{}} >CONTRIBUTORS</h1>
 
-            <div style={{ width: "100%", height: "100%", background: "rgb(36, 33, 33,0.9)", border: "12px solid black", borderRadius: 25, }}>
+            <motion.div whileHover={{ scale: 1.1 }} style={{ width: "100%", height: "100%", background: "rgb(36, 33, 33,0.9)", border: "12px solid black", borderRadius: 25, }}>
 
 
-            </div>
+            </motion.div>
           </div>
 
 
+        </div>
 
 
+        <div>
+
+          <h1 style={{ position: "relative" }}>ABOUT US</h1>
+          <p style={{ fontWeight: 500 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
         </div>
 
 
@@ -291,10 +337,7 @@ function App() {
 
 
 
-
-
-
-      </div>
+      </div >
     </>
   )
 }
