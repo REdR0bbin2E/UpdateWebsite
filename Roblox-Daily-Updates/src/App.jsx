@@ -2,7 +2,7 @@ import { useState, useRef, UseEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { animate, AnimatePresence, motion } from 'framer-motion'
+import { animate, AnimatePresence, motion, scale } from 'framer-motion'
 import FuuzynImage from '../src/assets/Roblox-avatars/FuuzynT.webp'
 import RedRobbin23Image from '../src/assets/Roblox-avatars/RedRobbin23T.webp'
 import MagpineImage from '../src/assets/Roblox-avatars/MagpineT.webp'
@@ -38,7 +38,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.5 }}
           style={{
-            background: "rgb(54, 42, 42)",
+            background: "rgb(36, 44, 96)",
             color: "white",
             alignSelf: "center",
             justifySelf: "center",
@@ -307,29 +307,33 @@ function App() {
           <div style={{ position: "relative", marginLeft: "45%", marginRight: "45%", zIndex: 10, top: -475 }}>
             <h1 >TO-DO LISTS</h1>
             <h3>June, 2025</h3>
-
-            {roles.map((_, index) => (
-              <div key={index} style={{ padding: "1rem", display: "flex", flexDirection: "row", width: "100%", flexWrap: "wrap", justifyContent: "space-between", gap: "16px" }}>
-                <motion.button style={{
-                  width: 250,
-                  height: 250,
-                  background: "rgb(18, 15, 15)",
-                  borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
-                  padding: "1rem",
-                  justifyContent: "space-between",
-                  flexDirection: "row"
-                }}>
-
-
-                  <h2>{roles[index]}</h2>
-
-
-                </motion.button>
-              </div>
-            ))}
-
-
           </div>
+
+          {roles.map((_, index) => (
+
+            < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
+              width: 200,
+              height: 200,
+              background: "rgb(18, 15, 15)",
+              borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
+              padding: "1rem",
+              flexDirection: "row",
+              alignItems: "left",
+              gap: "12px",
+              justifyContent: "space-evenly"
+
+
+            }}>
+
+
+              <h2>{roles[index]}</h2>
+
+
+            </motion.button>
+
+          ))}
+
+
 
 
 
@@ -346,7 +350,7 @@ function App() {
 
 
 
-        </div>
+        </div >
 
 
         <div>
