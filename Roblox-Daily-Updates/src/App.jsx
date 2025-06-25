@@ -110,6 +110,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
   </AnimatePresence >
 )
 
+const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling"]
 
 const developers = [
   {
@@ -178,10 +179,10 @@ function App() {
 
           {/*Add calendar component here*/}
           <div style={{ marginTop: "10%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
-            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid blue", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(41, 108, 180, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
 
 
-            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid green", borderLeft: 20, borderTop: 20 }}>All Update!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(41, 108, 180, 0.83)", borderLeft: 20, borderTop: 20 }}>All Updates!</motion.button>  {/*Button that redirects to date selected */}
           </div>
           <MyModal currentUser={currentUser} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
 
@@ -303,9 +304,31 @@ function App() {
           ))}
 
 
-          <div style={{ position: "relative", marginLeft: "30%", marginRight: "30%", zIndex: 10, top: -475 }}>
-            <h1 >GROUP PRODUCTIVITY</h1>
+          <div style={{ position: "relative", marginLeft: "45%", marginRight: "45%", zIndex: 10, top: -475 }}>
+            <h1 >TO-DO LISTS</h1>
             <h3>June, 2025</h3>
+
+            {roles.map((_, index) => (
+              <div key={index} style={{ padding: "1rem", display: "flex", flexDirection: "row", width: "100%", flexWrap: "wrap", justifyContent: "space-between", gap: "16px" }}>
+                <motion.button style={{
+                  width: 250,
+                  height: 250,
+                  background: "rgb(18, 15, 15)",
+                  borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
+                  padding: "1rem",
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}>
+
+
+                  <h2>{roles[index]}</h2>
+
+
+                </motion.button>
+              </div>
+            ))}
+
+
           </div>
 
 
@@ -319,6 +342,8 @@ function App() {
 
             </motion.div>
           </div>
+
+
 
 
         </div>
