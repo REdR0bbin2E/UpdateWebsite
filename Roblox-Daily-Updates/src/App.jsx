@@ -11,7 +11,7 @@ import RaillizeImage from '../src/assets/Roblox-avatars/RaillizeT.webp'
 import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
 
 
-const MyModal = ({ isOpen, onClose, children }) => (
+const MyModal = ({ isOpen, onClose, children, currentUser }) => (
   <AnimatePresence>
     {isOpen && (
       <motion.div
@@ -26,7 +26,6 @@ const MyModal = ({ isOpen, onClose, children }) => (
           backgroundColor: "rgba(0, 0, 0, 0.6)", // semi-transparent black
           borderRadius: 0,
           display: "flex",
-          alignItems: "center",
           justifyContent: "center",
           zIndex: 999
         }}
@@ -41,7 +40,8 @@ const MyModal = ({ isOpen, onClose, children }) => (
           style={{
             background: "rgb(54, 42, 42)",
             color: "white",
-
+            alignSelf: "center",
+            justifySelf: "center",
             padding: "2rem",
             borderBottom: "12px solid black",
             borderRight: "12px solid black",
@@ -55,10 +55,14 @@ const MyModal = ({ isOpen, onClose, children }) => (
           }}
         >
 
+          <h2></h2>
 
-          <button onClick={onClose} style={{ fontSize: 40, borderRadius: 50, border: "2px solid black" }}>
-            x
-          </button>
+          <motion.button whileHover={{ scale: 1.1 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className='Button2' onClick={onClose} style={{ position: "relative", top: "-9%", right: "-49%", fontSize: 30, borderRadius: 50, border: "4px solid black" }}>
+            X
+          </motion.button>
+
+          <h2>{currentUser}</h2>
+
           {children}
         </motion.div>
 
@@ -111,6 +115,15 @@ const developers = [
 function App() {
   const [count, setCount] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState('Aka');
+
+
+  function setModalOpenToTrueAndPassUserName(name) {
+    setModalOpen(true);
+    setCurrentUser(name);
+
+  }
+
 
   return (
     <>
@@ -129,7 +142,7 @@ function App() {
 
           <motion.button whileHover={{ backgroundColor: "#000a" }} style={{ marginBottom: "5%", width: "50%" }}>Go</motion.button>  {/*Button that redirects to date selected */}
 
-          <MyModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+          <MyModal currentUser={currentUser} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
 
             <div>
 
@@ -216,7 +229,7 @@ function App() {
 
           {developers.map((_, index) => (
 
-            <motion.button onClick={() => setModalOpen(true)} whileHover={{ opacity: 1, scale: 1.05 }} initial={{ opacity: 0 }} className='BackgroundDeveloper'
+            <motion.button onClick={() => setModalOpenToTrueAndPassUserName(developers[index].name)} whileHover={{ opacity: 1, scale: 1.05 }} initial={{ opacity: 0 }} className='BackgroundDeveloper'
               key={index}
               style={{
                 width: "48%",
