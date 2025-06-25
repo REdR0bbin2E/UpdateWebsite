@@ -304,33 +304,37 @@ function App() {
           ))}
 
 
-          <div style={{ position: "relative", marginLeft: "45%", marginRight: "45%", zIndex: 10, top: -475 }}>
+          <div style={{ position: "relative", marginLeft: "40%", marginRight: "40%", zIndex: 10, top: -475 }}>
             <h1 >TO-DO LISTS</h1>
             <h3>June, 2025</h3>
           </div>
 
           {roles.map((_, index) => (
-
-            < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
-              width: 200,
-              height: 200,
-              background: "rgb(18, 15, 15)",
-              borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
-              padding: "1rem",
-              flexDirection: "row",
-              alignItems: "left",
-              gap: "12px",
-              justifyContent: "space-evenly"
-
-
-            }}>
-
-
-              <h2>{roles[index]}</h2>
+            <div style={{ position: "relative", display: "flex", top: -425 }}>
+              < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
+                width: 200,
+                height: 200,
+                background: "rgb(18, 15, 15)",
+                borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
+                padding: "1rem",
+                flexDirection: "row",
+                alignItems: "left",
+                gap: "12px",
+                justifyContent: "space-evenly",
+                position: "relative",
+                zIndex: 20,
 
 
-            </motion.button>
 
+
+              }}>
+
+
+                <h2>{roles[index]}</h2>
+
+
+              </motion.button>
+            </div>
           ))}
 
 
@@ -339,7 +343,7 @@ function App() {
 
 
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
-            <h1 className='Contributors' style={{}} >CONTRIBUTORS</h1>
+            <h1 className='Contributors' style={{ marginTop: "20%" }} >CONTRIBUTORS</h1>
 
             <motion.div whileHover={{ scale: 1.1 }} style={{ width: "100%", height: "100%", background: "rgb(36, 33, 33,0.9)", border: "12px solid black", borderRadius: 25, }}>
 
