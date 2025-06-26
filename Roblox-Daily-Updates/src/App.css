@@ -21,8 +21,12 @@
   transition: border-color 0.25s;
 }
 
+.BackgroundRoles {
+  background-image: linear-gradient(#262833aa, #0a0c30aa);
+  border-radius: 360px;
+}
 
-.ContributorsBackground {
+.Contributors {
   background-image: linear-gradient(#262833aa, #0a0c30aa);
 }
 

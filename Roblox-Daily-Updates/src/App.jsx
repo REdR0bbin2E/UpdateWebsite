@@ -110,7 +110,109 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
   </AnimatePresence >
 )
 
+
+
+
+
+const MyModal2 = ({ isOpen, onClose, children }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <motion.div
+        className='modal-backdrop'
+        initial={{ opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ opacity: 0, duration: 1 }}
+        transition={{ duration: 0.25 }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.6)", // semi-transparent black
+          borderRadius: 0,
+          display: "flex",
+          justifyContent: "center",
+          zIndex: 999
+        }}
+        onClick={onClose}
+      >
+
+        <motion.div onClick={e => e.stopPropagation()}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            background: "rgb(36, 44, 96)",
+            color: "white",
+            alignSelf: "center",
+            justifySelf: "center",
+            padding: "2rem",
+            borderBottom: "12px solid black",
+            borderRight: "12px solid black",
+            borderTop: "6px solid black",
+            borderLeft: "6px solid black",
+
+            borderRadius: "18px",
+
+            width: "60%",
+            height: "70%",
+          }}
+        >
+
+          <h2></h2>
+
+          <motion.button whileHover={{ scale: 1.1 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className='Button2' onClick={onClose} style={{ position: "relative", top: "-9%", right: "-49%", fontSize: 30, borderRadius: 50, border: "4px solid black" }}>
+            X
+          </motion.button>
+
+          <h2 style={{ position: "relative", top: "-22%" }}>UPLOAD UPDATE</h2>
+
+          <motion.div style={{ top: "-15%", width: "42%", height: "73%", background: "rgba(0, 0, 0, 0.6)", borderRadius: 50, border: "4px solid black", position: "relative" }}>
+            TEXT
+
+
+
+
+          </motion.div>
+
+          <motion.input placeholder={"DEVELOPER NAME"} style={{ position: "absolute", border: "4px solid black", backgroundColor: "rgba(0,0,0,0.6)", borderRadius: 15, height: "8%", top: "26%", right: "39%", }}></motion.input>
+
+
+          <motion.input placeholder={"UPDATE CATAGORY"} style={{ position: "absolute", border: "4px solid black", backgroundColor: "rgba(0,0,0,0.6)", borderRadius: 15, height: "8%", top: "26%", right: "25%", }}></motion.input>
+
+
+          <motion.div style={{ right: "22%", top: "37.4%", width: "30%", height: "40%", background: "rgba(0, 0, 0, 0.6)", borderRadius: 50, border: "4px solid black", position: "absolute" }}>
+
+            IMAGES
+
+          </motion.div>
+
+
+
+          <button style={{ width: 500, bottom: "12%", left: "0%", border: "6px solid black", position: "relative" }}>
+            UPLOAD
+          </button>
+
+
+
+          {children}
+        </motion.div>
+
+      </motion.div>
+
+    )}
+  </AnimatePresence >
+)
+
+
+
+
+
+
+
+
 const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling"]
+const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
+
 
 const developers = [
   {
@@ -154,12 +256,19 @@ const developers = [
 function App() {
   const [count, setCount] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState('Aka');
 
 
   function setModalOpenToTrueAndPassUserName(name) {
     setModalOpen(true);
     setCurrentUser(name);
+
+  }
+
+
+  function setUploadModalOpenToTrue() {
+    setUploadModalOpen(true);
 
   }
 
@@ -171,7 +280,7 @@ function App() {
 
 
 
-        <h1>Raq Development HQ</h1>
+        <h1 style={{}}>RAQ DEVELOPMENT HQ</h1>
         <p style={{ fontSize: 20 }}>contribute daily updates by text and images! </p>
 
 
@@ -179,38 +288,25 @@ function App() {
 
           {/*Add calendar component here*/}
           <div style={{ marginTop: "10%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
-            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(41, 108, 180, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button onClick={() => setUploadModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
 
 
-            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(41, 108, 180, 0.83)", borderLeft: 20, borderTop: 20 }}>All Updates!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>All Updates!</motion.button>  {/*Button that redirects to date selected */}
           </div>
           <MyModal currentUser={currentUser} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
 
-            <div>
 
-
-
-
-
-              <div>
-
-              </div>
-
-
-
-              {/* Line down the middle */}
-
-
-
-
-              <div></div>
-
-
-
-            </div>
 
 
           </MyModal>
+
+
+          <MyModal2 isOpen={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
+
+
+
+
+          </MyModal2>
 
 
         </div>
@@ -252,8 +348,8 @@ function App() {
 
 
               <ul style={{ marginTop: 0, paddingLeft: "10%" }}>
-                <li>{developers[index].roles[0]}</li>
-                <li>{developers[index].roles[1]}</li>
+                <li style={{ textTransform: "uppercase" }}>{developers[index].roles[0]}</li>
+                <li style={{ textTransform: "uppercase" }}>{developers[index].roles[1]}</li>
               </ul>
 
               <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
@@ -304,18 +400,19 @@ function App() {
           ))}
 
 
-          <div style={{ position: "relative", marginLeft: "40%", marginRight: "40%", zIndex: 10, top: -475 }}>
-            <h1 >TO-DO LISTS</h1>
-            <h3>June, 2025</h3>
+          <div style={{ position: "relative", margin: "0 auto", width: "100%", maxWidth: "1200px", zIndex: 10, top: -475 }}>
+            <h1 className='Contributors' style={{ width: '100%', border: "4px solid black" }}>TO-DO LISTS</h1>
+
+            <h3 className='Contributors' style={{ border: "4px solid black" }}>June, 2025</h3>
           </div>
 
           {roles.map((_, index) => (
-            <div style={{ position: "relative", display: "flex", top: -425 }}>
+            <motion.div whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ position: "relative", display: "flex", top: -425 }}>
               < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
-                width: 200,
-                height: 200,
-                background: "rgb(18, 15, 15)",
-                borderRadius: 360, border: "8px solid rgba(90, 50, 170, 0.5)",
+                width: 195,
+                height: 195,
+                background: "rgb(18, 15, 15,0)",
+                borderRadius: 360, border: "8px solid rgb(0, 0, 0)",
                 padding: "1rem",
                 flexDirection: "row",
                 alignItems: "left",
@@ -330,11 +427,11 @@ function App() {
               }}>
 
 
-                <h2>{roles[index]}</h2>
+                <h2 style={{ textTransform: "uppercase" }}>{roles[index]}</h2>
 
 
               </motion.button>
-            </div>
+            </motion.div>
           ))}
 
 
@@ -343,9 +440,9 @@ function App() {
 
 
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
-            <h1 className='Contributors' style={{ marginTop: "20%" }} >CONTRIBUTORS</h1>
+            <h1 className='Contributors' style={{ marginTop: "20%", border: "4px solid black" }} >CONTRIBUTORS</h1>
 
-            <motion.div whileHover={{ scale: 1.1 }} style={{ width: "100%", height: "100%", background: "rgb(36, 33, 33,0.9)", border: "12px solid black", borderRadius: 25, }}>
+            <motion.div className='Contributors' whileHover={{ scale: 1.01 }} style={{ width: "100%", height: "100%", border: "4px solid black", borderRadius: 25, }}>
 
 
             </motion.div>
@@ -359,8 +456,8 @@ function App() {
 
         <div>
 
-          <h1 style={{ position: "relative" }}>ABOUT US</h1>
-          <p style={{ fontWeight: 500 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
+          <h1 className='Contributors' style={{ position: "relative", border: "4px solid black" }}>ABOUT US</h1>
+          <p style={{ fontWeight: "bold", fontSize: 20 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
         </div>
 
 
