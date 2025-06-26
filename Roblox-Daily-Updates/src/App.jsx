@@ -61,7 +61,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => (
             X
           </motion.button>
 
-          <h2 style={{ position: "relative", top: "-22%" }}>{currentUser}'s Update Log</h2>
+          <h2 style={{ textTransform: "uppercase", position: "relative", top: "-22%" }}>{currentUser}'S UPDATE LOG</h2>
 
           <motion.div style={{ top: "25%", width: "90%", height: "55%", background: "rgba(0, 0, 0, 0.6)", borderRadius: 50, border: "4px solid black", position: "absolute" }}>
 
@@ -257,7 +257,7 @@ function App() {
   const [count, setCount] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState('Aka');
+  const [currentUser, setCurrentUser] = useState('');
 
 
   function setModalOpenToTrueAndPassUserName(name) {
