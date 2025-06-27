@@ -400,14 +400,6 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
   );
 };
 
-
-
-
-
-
-
-
-
 const MyModal3 = ({ isOpen, onClose, children }) => {
   const modalRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -580,7 +572,240 @@ const MyModal3 = ({ isOpen, onClose, children }) => {
   );
 };
 
+const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
+  const modalRef = useRef(null);
+  const scrollContainerRef = useRef(null);
 
+  // Sample updates data - replace with your actual data
+  const sampleUpdates = [
+    { content: "Fixed lighting issues in main scene" },
+    { content: "Added new character animations for running" },
+    { content: "Implemented new sound effects for UI interactions" },
+    { content: "Optimized terrain rendering for better performance" },
+    { content: "Created new weapon models and textures" },
+    { content: "Scripted new inventory system with drag and drop" },
+    { content: "Added particle effects for spell casting" },
+    { content: "Built new dungeon environment with interactive elements" },
+  ];
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      // Focus the modal when it opens
+      modalRef.current.focus();
+
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isOpen]);
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className='modal-backdrop'
+          initial={{ opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ opacity: 0, duration: 1 }}
+          transition={{ duration: 0.25 }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            borderRadius: 0,
+            display: "flex",
+            justifyContent: "space-evenly",
+
+            zIndex: 999
+          }}
+          onClick={onClose}
+        >
+
+
+
+
+          <motion.div
+            ref={modalRef}
+            onClick={e => e.stopPropagation()}
+            onKeyDown={handleKeyDown}
+            tabIndex={-1}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              background: "rgb(36, 44, 96)",
+              color: "white",
+              alignSelf: "center",
+              justifySelf: "center",
+              padding: "2rem",
+              borderBottom: "12px solid black",
+              borderRight: "12px solid black",
+              borderTop: "6px solid black",
+              borderLeft: "6px solid black",
+              borderRadius: "18px",
+              width: "35%",
+              height: "70%",
+              outline: "none"
+            }}
+          >
+            <h2></h2>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className='Button2'
+              onClick={onClose}
+              style={{
+                position: "relative",
+                top: "-9%",
+                right: "-49%",
+                fontSize: 30,
+                borderRadius: 50,
+                border: "4px solid black"
+              }}
+            >
+              X
+            </motion.button>
+
+            <h2 style={{ textTransform: "uppercase", position: "relative", top: "-22%" }}>{currentRole} TO-DO</h2>
+
+            <motion.div
+              ref={scrollContainerRef}
+
+              style={{
+                top: "-15%",
+                width: "90%",
+                height: "70%",
+                background: "rgba(0, 0, 0, 0.9)",
+                borderRadius: 50,
+                border: "4px solid black",
+                position: "relative",
+                overflowY: "auto",
+                padding: "20px",
+                left: "0%",
+                scrollbarWidth: "none"
+
+              }}
+            >
+              {sampleUpdates.map((update, index) => (
+                <motion.div
+                  whileInView={{ opacity: 1 }}
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 0, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  style={{
+                    background: "rgba(255, 255, 255, 0.1)",
+                    margin: "10px 0",
+                    padding: "15px",
+                    borderRadius: "15px",
+                    border: "2px solid rgba(255, 255, 255, 0.2)"
+                  }}
+                >
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "8px"
+                  }}>
+
+                  </div>
+                  <p style={{ margin: 0, lineHeight: "1.4" }}>{update.content}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {children}
+          </motion.div>
+
+
+
+
+          {/*TO-DO LIST COMPLETED LIST STARTS HERE*/}
+
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}
+            onClick={e => e.stopPropagation()}
+            onKeyDown={handleKeyDown}
+            tabIndex={-1} style={{ top: "9%", position: "relative", width: "40%", height: "80%", border: "6px solid rgba(255, 255, 255, 0.6)", borderRadius: 15, background: "rgba(0,0,0,1)" }}>
+
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className='Button2'
+              onClick={onClose}
+              style={{
+                position: "relative",
+                top: "2%",
+                right: "-43%",
+                fontSize: 30,
+                borderRadius: 50,
+                border: "4px solid black"
+              }}
+            >
+              X
+            </motion.button>
+
+
+
+            <h2 style={{ position: "relative", top: "-10%" }}>COMPLETED</h2>
+
+
+            <div style={{ top: "-10%", position: "relative", justifySelf: "center", scrollbarWidth: "none", overflowY: "auto", height: "80%", width: "90%", background: "rgba(112, 107, 107, 0.3)", borderRadius: 15, }}>
+
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+
+
+              </ul>
+
+
+            </div>
+
+
+
+
+
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 
 
@@ -632,9 +857,10 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [allUpdatesModalOpen, setAllUpdatesModalOpen] = useState(false);
+  const [toDoListModalOpen, setToDoModalOpen] = useState(false);
 
   const [currentUser, setCurrentUser] = useState('');
-
+  const [currentRole, setCurrentRole] = useState('');
 
   function setModalOpenToTrueAndPassUserName(name) {
     setModalOpen(true);
@@ -652,6 +878,12 @@ function App() {
 
   function setAllUpdatesModalOpenToTrue() {
     setAllUpdatesModalOpen(true);
+  }
+
+
+  function setToDoListModalOpenToTrue(role) {
+    setCurrentRole(role);
+    setToDoModalOpen(true);
   }
 
 
@@ -687,6 +919,11 @@ function App() {
 
           <MyModal3 isOpen={allUpdatesModalOpen} onClose={() => setAllUpdatesModalOpen(false)}>
           </MyModal3>
+
+
+          <MyModal4 currentRole={currentRole} isOpen={toDoListModalOpen} onClose={() => setToDoModalOpen(false)}>
+          </MyModal4>
+
 
         </div>
 
@@ -786,7 +1023,7 @@ function App() {
           </div>
 
           {roles.map((_, index) => (
-            <motion.div whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex", top: -425 }}>
+            <motion.div onClick={() => setToDoListModalOpenToTrue(roles[index])} whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex", top: -425 }}>
               < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
                 width: 195,
                 height: 195,
@@ -815,10 +1052,6 @@ function App() {
           ))}
 
 
-
-
-
-
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
             <h1 className='Contributors' style={{ marginTop: "20%", border: "4px solid black" }} >CONTRIBUTORS</h1>
 
@@ -839,11 +1072,6 @@ function App() {
           <h1 className='Contributors' style={{ position: "relative", border: "4px solid black" }}>ABOUT US</h1>
           <p style={{ fontWeight: "bold", fontSize: 20 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
         </div>
-
-
-
-
-
 
 
 
