@@ -18,6 +18,7 @@ const date = new Date().toLocaleDateString();
 
 
 {/*Putting current user here so that I can make it a promp in <MyModal> */ }
+{/*Modal for checking the users updates */ }
 const MyModal = ({ isOpen, onClose, children, currentUser }) => {
   const modalRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -187,6 +188,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => {
   );
 };
 
+{/*Modal for posting an Update */ }
 const MyModal2 = ({ isOpen, onClose, children }) => {
   const modalRef = useRef(null);
   const textAreaRef = useRef(null);
@@ -400,6 +402,7 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
   );
 };
 
+{/*Modal for viewing all updates*/ }
 const MyModal3 = ({ isOpen, onClose, children }) => {
   const modalRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -572,20 +575,33 @@ const MyModal3 = ({ isOpen, onClose, children }) => {
   );
 };
 
+
+{/*Modal for each roles todo list*/ }
 const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
   const modalRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
-  // Sample updates data - replace with your actual data
+  // Updated sample data with more realistic todo items
   const sampleUpdates = [
-    { content: "Fixed lighting issues in main scene" },
-    { content: "Added new character animations for running" },
-    { content: "Implemented new sound effects for UI interactions" },
-    { content: "Optimized terrain rendering for better performance" },
-    { content: "Created new weapon models and textures" },
-    { content: "Scripted new inventory system with drag and drop" },
-    { content: "Added particle effects for spell casting" },
-    { content: "Built new dungeon environment with interactive elements" },
+    { content: "Review character design mockups and provide feedback", completed: false },
+    { content: "Update game mechanics documentation", completed: false },
+    { content: "Test new weapon balancing system", completed: false },
+    { content: "Create wireframes for inventory UI", completed: false },
+    { content: "Schedule team meeting for sprint planning", completed: false },
+    { content: "Implement player health regeneration feature", completed: false },
+    { content: "Debug collision detection issues in level 3", completed: false },
+    { content: "Write technical specification for save system", completed: false },
+  ];
+
+  const sampleUpdates2 = [
+    { content: "Fixed critical bug in player movement system", completed: true },
+    { content: "Completed audio integration for background music", completed: true },
+    { content: "Finalized color palette for main menu", completed: true },
+    { content: "Implemented auto-save functionality", completed: true },
+    { content: "Optimized texture loading for better performance", completed: true },
+    { content: "Created animation sequences for NPC interactions", completed: true },
+    { content: "Tested and deployed hotfix for server crashes", completed: true },
+    { content: "Updated game tutorial with new mechanics", completed: true },
   ];
 
   useEffect(() => {
@@ -625,14 +641,10 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
             borderRadius: 0,
             display: "flex",
             justifyContent: "space-evenly",
-
             zIndex: 999
           }}
           onClick={onClose}
         >
-
-
-
 
           <motion.div
             ref={modalRef}
@@ -654,7 +666,7 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
               borderTop: "6px solid black",
               borderLeft: "6px solid black",
               borderRadius: "18px",
-              width: "35%",
+              width: "38%",
               height: "70%",
               outline: "none"
             }}
@@ -685,9 +697,8 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
             <motion.div
               ref={scrollContainerRef}
-
               style={{
-                top: "-15%",
+                top: "-22%",
                 width: "90%",
                 height: "70%",
                 background: "rgba(0, 0, 0, 0.9)",
@@ -698,7 +709,6 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
                 padding: "20px",
                 left: "0%",
                 scrollbarWidth: "none"
-
               }}
             >
               {sampleUpdates.map((update, index) => (
@@ -713,36 +723,95 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
                     margin: "10px 0",
                     padding: "15px",
                     borderRadius: "15px",
-                    border: "2px solid rgba(255, 255, 255, 0.2)"
+                    border: "2px solid rgba(255, 255, 255, 0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px"
                   }}
                 >
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "8px"
-                  }}>
-
-                  </div>
-                  <p style={{ margin: 0, lineHeight: "1.4" }}>{update.content}</p>
+                  <input
+                    type="checkbox"
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#4CAF50",
+                      cursor: "pointer"
+                    }}
+                  />
+                  <p style={{ margin: 0, lineHeight: "1.4", flex: 1 }}>{update.content}</p>
                 </motion.div>
               ))}
             </motion.div>
 
+            <div style={{
+              position: "relative",
+              border: "4px solid black",
+              bottom: "21%",
+              borderRadius: 25,
+              background: "rgba(0,0,0,0.9)",
+              padding: "5px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px"
+            }}>
+              <input
+                placeholder='Add To-Do List Item...'
+                style={{
+                  borderRadius: 25,
+                  width: "100%",
+                  height: "30px",
+                  padding: "10px 15px",
+                  border: "2px solid rgba(255, 255, 255, 0.3)",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  color: "white",
+                  fontSize: "14px",
+                  resize: "none",
+                  outline: "none",
+                  fontFamily: "inherit"
+                }}
+              />
+
+              <button style={{
+                borderRadius: 50,
+                width: "45px",
+                height: "45px",
+                border: "2px solid rgba(255, 255, 255, 0.5)",
+                background: "rgba(76, 175, 80, 0.8)",
+                color: "white",
+                fontSize: "20px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.2s ease"
+              }}>
+                +
+              </button>
+            </div>
+
             {children}
           </motion.div>
 
-
-
-
           {/*TO-DO LIST COMPLETED LIST STARTS HERE*/}
 
-
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
             onClick={e => e.stopPropagation()}
             onKeyDown={handleKeyDown}
-            tabIndex={-1} style={{ top: "9%", position: "relative", width: "40%", height: "80%", border: "6px solid rgba(255, 255, 255, 0.6)", borderRadius: 15, background: "rgba(0,0,0,1)" }}>
-
+            tabIndex={-1}
+            style={{
+              top: "9%",
+              position: "relative",
+              width: "40%",
+              height: "80%",
+              border: "6px solid rgba(255, 255, 255, 0.6)",
+              borderRadius: 15,
+              background: "rgba(0,0,0,1)"
+            }}
+          >
 
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -764,42 +833,57 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
               X
             </motion.button>
 
-
-
             <h2 style={{ position: "relative", top: "-10%" }}>COMPLETED</h2>
 
+            <div style={{
+              top: "-10%",
+              position: "relative",
+              justifySelf: "center",
+              scrollbarWidth: "none",
+              overflowY: "auto",
+              height: "80%",
+              width: "90%",
+              background: "rgba(112, 107, 107, 0.3)",
+              borderRadius: 15,
+              padding: "10px"
+            }}>
 
-            <div style={{ top: "-10%", position: "relative", justifySelf: "center", scrollbarWidth: "none", overflowY: "auto", height: "80%", width: "90%", background: "rgba(112, 107, 107, 0.3)", borderRadius: 15, }}>
-
-              <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-
-
-              </ul>
-
-
+              {sampleUpdates2.map((updates, index) => (
+                <motion.div
+                  whileInView={{ opacity: 1 }}
+                  initial={{ opacity: 0, x: 200 }}
+                  animate={{ opacity: 0, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  style={{
+                    marginTop: "2%",
+                    border: "1px solid grey",
+                    borderRadius: 15,
+                    padding: "1rem",
+                    marginBottom: "3%",
+                    width: "90%",
+                    justifySelf: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px"
+                  }}
+                  key={index}
+                >
+                  <input
+                    type="checkbox"
+                    checked={true}
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      accentColor: "#4CAF50",
+                      cursor: "pointer"
+                    }}
+                  />
+                  <p style={{ margin: 0, lineHeight: "1.4", flex: 1, textDecoration: "line-through", opacity: 0.7 }}>
+                    {updates.content}
+                  </p>
+                </motion.div>
+              ))}
             </div>
-
-
-
-
-
           </motion.div>
         </motion.div>
       )}
