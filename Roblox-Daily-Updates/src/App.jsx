@@ -11,6 +11,7 @@ import RaillizeImage from '../src/assets/Roblox-avatars/RaillizeT.webp'
 import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
 import KingSaysImage from '../src/assets/images/KingSays.png'
 import RogueLineageImage from '../src/assets/Images/RogueLineage.png'
+import { bottom } from '@popperjs/core'
 
 
 const date = new Date().toLocaleDateString();
@@ -313,43 +314,60 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
               />
             </motion.div>
 
-            <motion.input
-              placeholder="DEVELOPER NAME"
-              style={{
-                position: "relative",
-                border: "4px solid black",
-                backgroundColor: "rgba(0,0,0,0.9)",
-                borderRadius: 15,
-                height: "8%",
-                bottom: "95%",
-                right: "-23%",
-                padding: "0 15px",
-                color: "white",
-                outline: "none"
-              }}
-            />
 
-            <motion.input
-              placeholder="UPDATE CATAGORY"
-              style={{
+
+            <motion.div style={{ paddingTop: "10px", padding: "0.5rem", left: "49%", top: "-97%", position: "relative", justifyContent: "space-evenly", display: "flex", background: "rgba(0,0,0,0.9)", width: "49%", borderRadius: 25 }}>
+
+
+              <motion.select style={{
                 position: "relative",
-                border: "4px solid black",
-                backgroundColor: "rgba(0,0,0,0.9)",
-                borderRadius: 15,
-                height: "8%",
-                bottom: "95%",
-                right: "-26%",
-                padding: "0 15px",
-                color: "white",
-                outline: "none"
-              }}
-            />
+                background: "rgba(0,0,0,1)",
+                borderRadius: 25,
+                padding: "10px",
+
+                fontWeight: "bold"
+
+
+              }}>
+                <option style={{ fontWeight: "bold" }} value="CATEGORY">CATEGORY</option>
+                <option style={{ fontWeight: "bold" }} value="VFX">VFX</option>
+                <option style={{ fontWeight: "bold" }} value="Animations">Animations</option>
+                <option style={{ fontWeight: "bold" }} value="Scripting">Scripting</option>
+                <option style={{ fontWeight: "bold" }} value="Building">Building</option>
+                <option style={{ fontWeight: "bold" }} value="Sound Design">Sound Design</option>
+                <option style={{ fontWeight: "bold" }} value="3D Modeling">3D Modeling</option>
+              </motion.select>
+
+
+
+              <motion.select style={{
+                position: "relative",
+                background: "rgba(0,0,0,1)",
+                borderRadius: 25,
+                padding: "10px",
+                fontWeight: "bold"
+
+
+              }}>
+                <option style={{ fontWeight: "bold" }} value="NAME">DEV NAME</option>
+                <option style={{ fontWeight: "bold" }} value="Red">Red</option>
+                <option style={{ fontWeight: "bold" }} value="Tripp">Tripp</option>
+                <option style={{ fontWeight: "bold" }} value="Mag">Mag</option>
+                <option style={{ fontWeight: "bold" }} value="Fuze">Fuze</option>
+                <option style={{ fontWeight: "bold" }} value="Kirin">Kirin</option>
+                <option style={{ fontWeight: "bold" }} value="Rail">Rail</option>
+              </motion.select>
+
+
+            </motion.div>
+
+
 
             <motion.div style={{
-              top: "-90%",
+              top: "-94%",
               right: "-49%",
               width: "46%",
-              height: "55%",
+              height: "58%",
               background: "rgba(0, 0, 0, 0.9)",
               borderRadius: 50,
               border: "4px solid black",
@@ -379,7 +397,7 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
 
             <motion.button whileHover={{ scale: 1.05 }} style={{
               width: 500,
-              bottom: "87%",
+              bottom: "92%",
               left: "0%",
               border: "6px solid black",
               padding: "15px",
@@ -397,8 +415,9 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
             {children}
           </motion.div>
         </motion.div>
-      )}
-    </AnimatePresence>
+      )
+      }
+    </AnimatePresence >
   );
 };
 
@@ -942,7 +961,7 @@ function App() {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [allUpdatesModalOpen, setAllUpdatesModalOpen] = useState(false);
   const [toDoListModalOpen, setToDoModalOpen] = useState(false);
-
+  const [category, setCategory] = useState("VFX");
   const [currentUser, setCurrentUser] = useState('');
   const [currentRole, setCurrentRole] = useState('');
 
@@ -1107,7 +1126,7 @@ function App() {
           </div>
 
           {roles.map((_, index) => (
-            <motion.div onClick={() => setToDoListModalOpenToTrue(roles[index])} whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex", top: -425 }}>
+            <motion.div onClick={() => setToDoListModalOpenToTrue(roles[index])} whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex", top: -375 }}>
               < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
                 width: 195,
                 height: 195,
