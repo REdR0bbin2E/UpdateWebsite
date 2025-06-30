@@ -8,45 +8,60 @@ import { animate, AnimatePresence, motion, scale } from 'framer-motion'
 
 function Login() {
 
-
+    const [signInOnTop, setSignInOnTop] = useState(false)
 
 
     return (
         <>
 
+            <h1>
+                Roblox Hub
+            </h1>
+
+            <p>Contribute and colaborate with likeminded individuals.</p>
+
+            <motion.div
+                style={{
+                    display: "flex",
+                    position: "relative",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "rgba(0,0,0,0.9)",
+                    padding: "40px",
+                    width: "80%", // Increase width
+                    border: "3px solid grey",
+                    borderRadius: 35,
+                    zIndex: 2,
+                    boxShadow: <shadow />
+
+                }}
+            >
+
+                <div style={{ borderRadius: 5, position: "relative", width: "10%", height: "20%", background: "white" }}>
+                    a
+                </div>
 
 
-            <h1 style={{ fontWeight: "bolder" }}>Roblox Hub</h1>
-            <p style={{ marginBottom: "25%", }}>Contribute and collaborate to create meaningful projects.</p>
+                <h3 style={{ fontSize: "2rem" }}>Sign in with email</h3>
+
+                <p style={{ marginTop: "0.25rem", fontSize: "1.1rem" }}>Input a key to join an existing collaborative roblox project.</p>
+                <input placeholder="Email" style={{ marginTop: "1rem", borderRadius: 25, width: "100%", padding: "10px", fontSize: "1rem", marginBottom: "1rem" }} />
+                <input placeholder="Project Key" style={{ borderRadius: 25, width: "100%", padding: "10px", fontSize: "1rem" }} />
+                <p>forgot project key</p>
+                <button style={{ borderRadius: 25, paddingLeft: "20%", paddingRight: "20%" }}>Navigate To Project</button>
 
 
+                <p>or sign in with</p>
 
+                <div style={{ borderRadius: 15, width: "100%" }}>
+                    {/*Google Facebook and Apple go here */}
+                    <button style={{ borderTopLeftRadius: 50, borderBottomLeftRadius: 50 }}>Google</button>
+                    <button style={{ borderRadius: 0 }}>Facebook</button>
+                    <button style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, borderTopRightRadius: 50, borderBottomRightRadius: 50 }}>Apple</button>
 
-
-
-
-
-
-
-            <motion.div style={{ justifyContent: "center", alignItems: "center", background: "rgba(0,0,0,0.9)", height: "100%", width: "50%", border: "3px solid grey", borderRadius: 10 }}>
-                <h3>SIGN-IN</h3>
-
-
-                <p>EMAIL</p>
-                <input placeholder=''></input>
-
-
-
-
-                <p>LOBBY KEY</p>
-                <input placeholder=''></input>
-
-                <a>a</a>
-
-
+                </div>
             </motion.div>
-
-
 
 
         </>
