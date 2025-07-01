@@ -1,15 +1,16 @@
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, use } from 'react'
 import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
-import './Login.css'
+import './Signup.css'
 import { right } from '@popperjs/core'
 
 
-function Login() {
+function Signup() {
     const [userPassword, setUserPassword] = useState('')
     const [email, setEmail] = useState('')
-
+    const [username, setUsername] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [showKey, setShowKey] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
@@ -23,8 +24,11 @@ function Login() {
 
     function inputValidation() {
         const newErrors = {}
+        {/*For whitespace */ }
 
-
+        if (!username.trim()) {
+            newErrors.username = 'Username is required'
+        }
 
         if (!email.trim()) {
             newErrors.email = 'Email is requried'
@@ -35,6 +39,11 @@ function Login() {
 
         if (!userPassword.trim()) {
             newErrors.userPassword = 'Password is required'
+        }
+        else if (userPassword != confirmPassword) {
+            newErrors.userPassword = 'Password must match'
+            newErrors.confirmPassword = 'Password must match'
+
         }
 
         setErrors(newErrors)
@@ -132,7 +141,7 @@ function Login() {
             justifyContent: 'center',
             width: '80px',
             height: '80px',
-            background: 'linear-gradient(135deg,rgb(247, 85, 85),rgb(214, 88, 88))',
+            background: 'linear-gradient(135deg, #a855f7, #3b82f6)',
             borderRadius: '16px',
             marginBottom: '16px',
             boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
@@ -207,7 +216,7 @@ function Login() {
 
         },
         inputError: {
-            borderColor: 'white',
+            borderColor: '#f87171'
         },
         inputFocus: {
             borderColor: '#a855f7',
@@ -230,7 +239,7 @@ function Login() {
             transition: 'color 0.2s ease'
         },
         errorMessage: {
-            color: 'rgb(255, 255, 255)',
+            color: '#f87171',
             fontSize: '14px',
             marginTop: '4px',
             marginLeft: '8px'
@@ -248,7 +257,7 @@ function Login() {
         },
         submitButton: {
             width: '100%',
-            background: 'linear-gradient(135deg, #D65858,rgb(227, 105, 105))',
+            background: 'linear-gradient(135deg, #a855f7, #3b82f6)',
             color: 'white',
             padding: '16px',
             borderRadius: '16px',
@@ -260,7 +269,7 @@ function Login() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            boxShadow: '0 10px 25px rgba(208, 168, 151, 0.3)',
+            boxShadow: '0 10px 25px rgba(168, 85, 247, 0.3)',
             transition: 'all 0.2s ease',
             marginBottom: '24px'
         },
@@ -307,14 +316,14 @@ function Login() {
             backdropFilter: 'blur(4px)',
             WebkitBackdropFilter: 'blur(4px)'
         },
-        signUp:
+        signIn:
         {
             y: "-30%",
             position: "relative",
             left: "40%",
             backdropFilter: 'blur(4px)',
             borderRadius: 15,
-            background: "rgb(227, 105, 105)",
+            background: "#a855f7",
             width: "100px",
             boxShadow: "0 3px 5px  rgb(153, 163, 187)"
         }
@@ -322,9 +331,13 @@ function Login() {
 
 
     return (
+        <body className='signup-background'>
 
-        <body className='login-background'>
+
+
             <div styles={styles.container}>
+
+
                 {/* Animated background elements */}
                 <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                     <motion.div
@@ -359,7 +372,9 @@ function Login() {
 
                 <motion.div
                     style={styles.mainContainer}
-
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
                 >
 
                     {/*Header*/}
@@ -375,7 +390,7 @@ function Login() {
                             Crew Create
                         </h1>
                         <p style={styles.subtitle}>
-                            Contribute and collaborate on Roblox experiences with likeminded individuals!
+                            Sign up to become apart of the creating!
                         </p>
                     </motion.div>
 
@@ -387,12 +402,12 @@ function Login() {
                         whileHover={{ boxShadow: "0 25px 50px rgba(0,0,0,0.3)" }}
                     >
 
-                        {/*Sign up instead button*/}
+                        {/*Sign in instead button*/}
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.5 }}
-                            style={styles.signUp}>
-                            Sign Up
+                            style={styles.signIn}>
+                            Sign In
                         </motion.button>
 
 
@@ -400,7 +415,7 @@ function Login() {
                             style={styles.formTitle}
                             variants={itemVariants}
                         >
-                            Sign in with email
+                            Sign up with email
                         </motion.h3>
 
                         <motion.p
@@ -456,7 +471,43 @@ function Login() {
 
 
                             </motion.div>
+                            {/*Username Input*/}
+                            <motion.div variants={itemVariants} style={styles.inputContainer}>
+                                <div style={styles.inputWrapper}>
+                                    <User style={styles.inputIcon} />
 
+
+                                    <input
+                                        className='myinput'
+                                        type='text'
+                                        placeholder='Username' value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        style={{ ...styles.input, ...(errors.username ? styles.inputError : {}) }}
+                                        onFocus={(e) => {
+                                            e.target.style.borderColor = '#a855f7'
+                                            e.target.style.background = 'rgba(255,255,255,0.2)'
+                                        }}
+
+                                        onBlur={(e) => {
+                                            if (!errors.username) {
+                                                e.target.style.borderColor = 'rgba(255,255,255,0.2)'
+                                                e.target.style.background = 'rgba(255,255,255,0.1)'
+                                            }
+                                        }}
+                                    />
+
+                                </div>
+                                {errors.username && (
+                                    <motion.p style={styles.errorMessage}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}>
+
+                                        {errors.username}
+
+                                    </motion.p>
+                                )}
+
+                            </motion.div>
 
                             {/*Password Input */}
                             <motion.div variants={itemVariants}
@@ -467,7 +518,6 @@ function Login() {
 
                                     <input
                                         className='myinput'
-                                        onKeyDown={handleKeyDown}
                                         type={showKey ? "text" : "password"}
                                         placeholder='Password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)}
                                         style={{ ...styles.input, ...styles.passwordInput, ...(errors.userPassword ? styles.inputError : {}) }}
@@ -484,8 +534,7 @@ function Login() {
                                             }
                                         }}
                                     />
-
-                                    {/*This is for the Eye for password okok*/}
+                                    {/*This is for the Eye for project key okok*/}
                                     <button type="button"
                                         onClick={() => setShowKey(!showKey)} style={styles.eyeButton}
                                         onMouseEnter={(e) => e.target.style.color = 'white'}
@@ -513,19 +562,61 @@ function Login() {
                             </motion.div>
 
 
-                            {/*Forget Key Link */}
+
+                            {/*Confirm password Input */}
                             <motion.div variants={itemVariants}
-                                style={{ textAlign: 'center', marginBottom: '16px' }}>
+                                style={styles.inputContainer}
+                            >
+                                <div style={styles.inputWrapper}>
+                                    <Key style={styles.inputIcon} />
 
-                                <button style={styles.forgotLink}
-                                    onMouseEnter={(e) => e.target.style.color = '#ddd6fe'}
-                                    onMouseDown={(e) => e.target.style.color = '#c084fc'}>
+                                    <input
+                                        className='myinput'
+                                        type={showKey ? "text" : "password"}
+                                        onKeyDown={handleKeyDown}
+                                        placeholder='Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                                        style={{ ...styles.input, ...styles.passwordInput, ...(errors.confirmPassword ? styles.inputError : {}) }}
 
-                                    Forgot Password?
+                                        onFocus={(e) => {
+                                            e.target.style.borderColor = '#a855f7'
+                                            e.target.style.background = 'rgba(255,255,255,0.2)'
+                                        }}
 
-                                </button>
+                                        onBlur={(e) => {
+                                            if (!errors.confirmPassword) {
+                                                e.target.style.borderColor = 'rgba(255,255,255,0.2)'
+                                                e.target.style.background = 'rgba(255,255,255,0.1)'
+                                            }
+                                        }}
+                                    />
+                                    {/*This is for the Eye for project key okok*/}
+                                    <button type="button"
+                                        onClick={() => setShowKey(!showKey)} style={styles.eyeButton}
+                                        onMouseEnter={(e) => e.target.style.color = 'white'}
+                                        onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
+
+                                    >
+                                        {/* Note for later: go back and restyle the eyeButton in style const to override button click background color */}
+                                        {showKey ? <EyeOff style={{ width: '20px', height: '20px' }} /> : <Eye style={{ width: '20px', height: '20px' }} />}
+
+                                    </button>
+
+                                </div>
+
+
+                                {errors.confirmPassword && (
+                                    <motion.p style={styles.errorMessage}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}>
+
+                                        {errors.confirmPassword}
+
+                                    </motion.p>
+                                )}
 
                             </motion.div>
+
+
 
 
                             {/*Navigate button now */}
@@ -533,13 +624,13 @@ function Login() {
                                 <motion.div onClick={inputValidation}
                                     disabled={isLoading}
                                     style={{ ...styles.submitButton, ...(isLoading ? styles.submitButtonDisabled : {}), justifySelf: "center" }}
-                                    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(218, 151, 151, 0.4)" }}
+                                    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(168,85,247,0.4)" }}
                                     whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
 
 
                                     {isLoading ? (<motion.div style={styles.spinner} animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />) : (
                                         <>
-                                            Navigate To Account
+                                            Create Account
 
                                             <ArrowRight style={{ width: '20px', height: '20px' }} />
                                         </>
@@ -556,7 +647,7 @@ function Login() {
                         {/* Divider */}
                         <motion.div variants={itemVariants} style={styles.divider}>
                             <div style={styles.dividerLine}></div>
-                            <span style={styles.dividerText}>or sign in with</span>
+                            <span style={styles.dividerText}>or sign up with</span>
                             <div style={styles.dividerLine}></div>
                         </motion.div>
 
@@ -600,7 +691,7 @@ function Login() {
     )
 }
 
-export default Login
+export default Signup
 
 
 

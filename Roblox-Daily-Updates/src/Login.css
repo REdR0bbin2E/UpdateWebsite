@@ -1,3 +1,11 @@
 .myinput::placeholder {
     color: rgb(162, 160, 157)
 }
+
+
+.login-background {
+    background-image: linear-gradient(to left, #2e0606, #a13434ad, #b24c43b9);
+    background-size: 600% 600%;
+    animation: background-change 30s ease infinite;
+    min-height: 100vh;
+}

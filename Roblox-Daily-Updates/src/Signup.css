@@ -1,0 +1,6 @@
+.signup-background {
+    background-image: linear-gradient(to left, #0f2027, #203a43, #2c5364);
+    background-size: 600% 600%;
+    animation: background-change 30s ease infinite;
+    min-height: 100vh;
+}
