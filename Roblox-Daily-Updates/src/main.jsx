@@ -10,6 +10,6 @@ import Login from './Login.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App /> {/* Once finished with login screen switch back to app*/}
+    <Login /> {/* Once finished with login screen switch back to app*/}
   </StrictMode>,
 )

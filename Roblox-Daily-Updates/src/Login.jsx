@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
-import './App.css'
+import './Login.css'
 
 
 function Login() {
@@ -192,14 +192,15 @@ function Login() {
             paddingRight: '16px',
             paddingTop: '16px',
             paddingBottom: '16px',
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.2)',
             border: '1px solid rgba(255, 255, 255, 0.2)',
             borderRadius: '16px',
             color: 'white',
             fontSize: '16px',
             outline: 'none',
             transition: 'all 0.3s ease',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+
         },
         inputError: {
             borderColor: '#f87171'
@@ -371,7 +372,7 @@ function Login() {
                     whileHover={{ boxShadow: "0 25px 50px rgba(0,0,0,0.3)" }}
                     initial={{ y: 150 }}
                     animate={{ y: 0 }}
-                    transition={{ duration: 1.5 }}>
+                    transition={{ duration: 1 }}>
 
 
                     <motion.h3
@@ -397,11 +398,12 @@ function Login() {
                                 <input
                                     type="email"
                                     placeholder="Email"
+                                    className='myinput'
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     style={{
                                         ...styles.input,
-                                        ...(errors.email ? styles.inputError : {})
+                                        ...(errors.email ? styles.inputError : {}),
                                     }}
                                     onFocus={(e) => {
                                         e.target.style.borderColor = '#a855f7'
@@ -439,7 +441,9 @@ function Login() {
                                 <User style={styles.inputIcon} />
 
 
-                                <input type='text'
+                                <input
+                                    className='myinput'
+                                    type='text'
                                     placeholder='Name' value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     style={{ ...styles.input, ...(errors.name ? styles.inputError : {}) }}
@@ -476,7 +480,10 @@ function Login() {
                             <div style={styles.inputWrapper}>
                                 <Key style={styles.inputIcon} />
 
-                                <input type={showKey ? "text" : "password"} placeholder='Project Key' value={projectKey} onChange={(e) => setProjectKey(e.target.value)}
+                                <input
+                                    className='myinput'
+                                    type={showKey ? "text" : "password"}
+                                    placeholder='Project Key' value={projectKey} onChange={(e) => setProjectKey(e.target.value)}
                                     style={{ ...styles.input, ...styles.passwordInput, ...(errors.projectKey ? styles.inputError : {}) }}
 
                                     onFocus={(e) => {
