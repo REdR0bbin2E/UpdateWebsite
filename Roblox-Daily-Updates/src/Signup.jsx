@@ -15,6 +15,8 @@ function Signup() {
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
 
+
+    {/* to prevent putting wrapping everything in <body> w classname andd freezing website smh*/ }
     useEffect(() => {
         document.body.classList.add('signup-background');
         return () => document.body.classList.remove('signup-background');
@@ -394,7 +396,7 @@ function Signup() {
                         Crew Create
                     </h1>
                     <p style={styles.subtitle}>
-                        Sign up to become apart of the creating!
+                        Sign up to become apart of the team!
                     </p>
                 </motion.div>
 
@@ -426,7 +428,7 @@ function Signup() {
                         style={styles.formSubtitle}
                         variants={itemVariants}>
 
-                        Input a key to join an existing collaborative project
+                        Create an account to join and create collaborative projects.
                     </motion.p>
 
 

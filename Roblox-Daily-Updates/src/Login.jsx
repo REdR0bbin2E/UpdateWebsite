@@ -243,7 +243,7 @@ function Login() {
         forgotLink: {
             background: 'none',
             border: 'none',
-            color: '#c084fc',
+            color: 'rgb(255, 255, 255)',
             fontSize: '14px',
             cursor: 'pointer',
             textAlign: 'center',
@@ -411,7 +411,7 @@ function Login() {
                         style={styles.formSubtitle}
                         variants={itemVariants}>
 
-                        Input a key to join an existing collaborative project
+                        Sign back in to continue developing.
                     </motion.p>
 
 
