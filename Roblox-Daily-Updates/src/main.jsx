@@ -11,6 +11,6 @@ import Signup from './Signup.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Signup /> {/* Once finished with login screen switch back to app*/}
+    <Login /> {/* Once finished with login screen switch back to app*/}
   </StrictMode>,
 )

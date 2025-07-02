@@ -9,10 +9,15 @@ import { right } from '@popperjs/core'
 function Login() {
     const [userPassword, setUserPassword] = useState('')
     const [email, setEmail] = useState('')
-
     const [showKey, setShowKey] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
+
+    {/* to prevent putting wrapping everything in <body> w classname andd freezing website smh*/ }
+    useEffect(() => {
+        document.body.classList.add('login-background');
+        return () => document.body.classList.remove('login-background');
+    }, []);
 
     {/* When enter is clicked in password input */ }
     const handleKeyDown = (e) => {
@@ -323,280 +328,278 @@ function Login() {
 
     return (
 
-        <body className='login-background'>
-            <div styles={styles.container}>
-                {/* Animated background elements */}
-                <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-                    <motion.div
-                        style={{ ...styles.backgroundElement, ...styles.backgroundElement1 }}
-                        animate={{
-                            x: [0, 100, 0],
-                            y: [0, -50, 0],
-                            scale: [1, 1.1, 1]
-                        }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.div
-                        style={{ ...styles.backgroundElement, ...styles.backgroundElement2 }}
-                        animate={{
-                            x: [0, -100, 0],
-                            y: [0, 100, 0],
-                            scale: [1, 0.9, 1]
-                        }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.div
-                        style={{ ...styles.backgroundElement, ...styles.backgroundElement3 }}
-                        animate={{
-                            x: [0, 50, 0],
-                            y: [0, -30, 0],
-                            scale: [1, 1.2, 1]
-                        }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    />
-                </div>
-
-
+        <div styles={styles.container}>
+            {/* Animated background elements */}
+            <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
                 <motion.div
-                    style={styles.mainContainer}
+                    style={{ ...styles.backgroundElement, ...styles.backgroundElement1 }}
+                    animate={{
+                        x: [0, 100, 0],
+                        y: [0, -50, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                    style={{ ...styles.backgroundElement, ...styles.backgroundElement2 }}
+                    animate={{
+                        x: [0, -100, 0],
+                        y: [0, 100, 0],
+                        scale: [1, 0.9, 1]
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                    style={{ ...styles.backgroundElement, ...styles.backgroundElement3 }}
+                    animate={{
+                        x: [0, 50, 0],
+                        y: [0, -30, 0],
+                        scale: [1, 1.2, 1]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                />
+            </div>
 
+
+            <motion.div
+                style={styles.mainContainer}
+
+            >
+
+                {/*Header*/}
+                <motion.div style={styles.header} variants={itemVariants}>
+                    <motion.div
+                        style={styles.iconContainer}
+                        whileHover={{ rotate: 360, scale: 1.1 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <Gamepad2 style={{ width: '40px', height: '40px', color: 'white' }} />
+                    </motion.div>
+                    <h1 style={styles.title}>
+                        Crew Create
+                    </h1>
+                    <p style={styles.subtitle}>
+                        Contribute and collaborate on Roblox experiences with likeminded individuals!
+                    </p>
+                </motion.div>
+
+
+                {/* Main Form Card*/}
+                <motion.div
+                    style={styles.formCard}
+                    variants={itemVariants}
+                    whileHover={{ boxShadow: "0 25px 50px rgba(0,0,0,0.3)" }}
                 >
 
-                    {/*Header*/}
-                    <motion.div style={styles.header} variants={itemVariants}>
-                        <motion.div
-                            style={styles.iconContainer}
-                            whileHover={{ rotate: 360, scale: 1.1 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <Gamepad2 style={{ width: '40px', height: '40px', color: 'white' }} />
-                        </motion.div>
-                        <h1 style={styles.title}>
-                            Crew Create
-                        </h1>
-                        <p style={styles.subtitle}>
-                            Contribute and collaborate on Roblox experiences with likeminded individuals!
-                        </p>
-                    </motion.div>
+                    {/*Sign up instead button*/}
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.5 }}
+                        style={styles.signUp}>
+                        Sign Up
+                    </motion.button>
 
 
-                    {/* Main Form Card*/}
-                    <motion.div
-                        style={styles.formCard}
+                    <motion.h3
+                        style={styles.formTitle}
                         variants={itemVariants}
-                        whileHover={{ boxShadow: "0 25px 50px rgba(0,0,0,0.3)" }}
                     >
+                        Sign in with email
+                    </motion.h3>
 
-                        {/*Sign up instead button*/}
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.5 }}
-                            style={styles.signUp}>
-                            Sign Up
-                        </motion.button>
+                    <motion.p
+                        style={styles.formSubtitle}
+                        variants={itemVariants}>
+
+                        Input a key to join an existing collaborative project
+                    </motion.p>
 
 
-                        <motion.h3
-                            style={styles.formTitle}
-                            variants={itemVariants}
+                    <div>
+                        {/*Email Input */}
+                        <motion.div variants={itemVariants} style={styles.inputContainer}>
+                            <div style={styles.inputWrapper}>
+                                <Mail style={styles.inputIcon} />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    className='myinput'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    style={{
+                                        ...styles.input,
+                                        ...(errors.email ? styles.inputError : {}),
+                                    }}
+                                    onFocus={(e) => {
+                                        e.target.style.borderColor = '#a855f7'
+                                        e.target.style.background = 'rgba(255, 255, 255, 0.2)'
+                                    }}
+                                    onBlur={(e) => {
+                                        if (!errors.email) {
+                                            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+                                            e.target.style.background = 'rgba(255, 255, 255, 0.1)'
+                                        }
+                                    }}
+                                />
+                                {/*The styling checks if errors has an email object if it does use the inputError Style*/}
+
+
+                            </div>
+
+                            {errors.email && (
+                                <motion.p
+                                    style={styles.errorMessage}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}>
+
+                                    {errors.email}
+                                </motion.p>
+
+                            )}
+
+
+
+                        </motion.div>
+
+
+                        {/*Password Input */}
+                        <motion.div variants={itemVariants}
+                            style={styles.inputContainer}
                         >
-                            Sign in with email
-                        </motion.h3>
+                            <div style={styles.inputWrapper}>
+                                <Key style={styles.inputIcon} />
 
-                        <motion.p
-                            style={styles.formSubtitle}
-                            variants={itemVariants}>
+                                <input
+                                    className='myinput'
+                                    onKeyDown={handleKeyDown}
+                                    type={showKey ? "text" : "password"}
+                                    placeholder='Password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)}
+                                    style={{ ...styles.input, ...styles.passwordInput, ...(errors.userPassword ? styles.inputError : {}) }}
 
-                            Input a key to join an existing collaborative project
-                        </motion.p>
+                                    onFocus={(e) => {
+                                        e.target.style.borderColor = '#a855f7'
+                                        e.target.style.background = 'rgba(255,255,255,0.2)'
+                                    }}
 
+                                    onBlur={(e) => {
+                                        if (!errors.userPassword) {
+                                            e.target.style.borderColor = 'rgba(255,255,255,0.2)'
+                                            e.target.style.background = 'rgba(255,255,255,0.1)'
+                                        }
+                                    }}
+                                />
 
-                        <div>
-                            {/*Email Input */}
-                            <motion.div variants={itemVariants} style={styles.inputContainer}>
-                                <div style={styles.inputWrapper}>
-                                    <Mail style={styles.inputIcon} />
-                                    <input
-                                        type="email"
-                                        placeholder="Email"
-                                        className='myinput'
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        style={{
-                                            ...styles.input,
-                                            ...(errors.email ? styles.inputError : {}),
-                                        }}
-                                        onFocus={(e) => {
-                                            e.target.style.borderColor = '#a855f7'
-                                            e.target.style.background = 'rgba(255, 255, 255, 0.2)'
-                                        }}
-                                        onBlur={(e) => {
-                                            if (!errors.email) {
-                                                e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-                                                e.target.style.background = 'rgba(255, 255, 255, 0.1)'
-                                            }
-                                        }}
-                                    />
-                                    {/*The styling checks if errors has an email object if it does use the inputError Style*/}
+                                {/*This is for the Eye for password okok*/}
+                                <button type="button"
+                                    onClick={() => setShowKey(!showKey)} style={styles.eyeButton}
+                                    onMouseEnter={(e) => e.target.style.color = 'white'}
+                                    onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
 
-
-                                </div>
-
-                                {errors.email && (
-                                    <motion.p
-                                        style={styles.errorMessage}
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}>
-
-                                        {errors.email}
-                                    </motion.p>
-
-                                )}
-
-
-
-                            </motion.div>
-
-
-                            {/*Password Input */}
-                            <motion.div variants={itemVariants}
-                                style={styles.inputContainer}
-                            >
-                                <div style={styles.inputWrapper}>
-                                    <Key style={styles.inputIcon} />
-
-                                    <input
-                                        className='myinput'
-                                        onKeyDown={handleKeyDown}
-                                        type={showKey ? "text" : "password"}
-                                        placeholder='Password' value={userPassword} onChange={(e) => setUserPassword(e.target.value)}
-                                        style={{ ...styles.input, ...styles.passwordInput, ...(errors.userPassword ? styles.inputError : {}) }}
-
-                                        onFocus={(e) => {
-                                            e.target.style.borderColor = '#a855f7'
-                                            e.target.style.background = 'rgba(255,255,255,0.2)'
-                                        }}
-
-                                        onBlur={(e) => {
-                                            if (!errors.userPassword) {
-                                                e.target.style.borderColor = 'rgba(255,255,255,0.2)'
-                                                e.target.style.background = 'rgba(255,255,255,0.1)'
-                                            }
-                                        }}
-                                    />
-
-                                    {/*This is for the Eye for password okok*/}
-                                    <button type="button"
-                                        onClick={() => setShowKey(!showKey)} style={styles.eyeButton}
-                                        onMouseEnter={(e) => e.target.style.color = 'white'}
-                                        onMouseLeave={(e) => e.target.style.color = '#9ca3af'}
-
-                                    >
-                                        {/* Note for later: go back and restyle the eyeButton in style const to override button click background color */}
-                                        {showKey ? <EyeOff style={{ width: '20px', height: '20px' }} /> : <Eye style={{ width: '20px', height: '20px' }} />}
-
-                                    </button>
-
-                                </div>
-
-
-                                {errors.userPassword && (
-                                    <motion.p style={styles.errorMessage}
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}>
-
-                                        {errors.userPassword}
-
-                                    </motion.p>
-                                )}
-
-                            </motion.div>
-
-
-                            {/*Forget Key Link */}
-                            <motion.div variants={itemVariants}
-                                style={{ textAlign: 'center', marginBottom: '16px' }}>
-
-                                <button style={styles.forgotLink}
-                                    onMouseEnter={(e) => e.target.style.color = '#ddd6fe'}
-                                    onMouseDown={(e) => e.target.style.color = '#c084fc'}>
-
-                                    Forgot Password?
+                                >
+                                    {/* Note for later: go back and restyle the eyeButton in style const to override button click background color */}
+                                    {showKey ? <EyeOff style={{ width: '20px', height: '20px' }} /> : <Eye style={{ width: '20px', height: '20px' }} />}
 
                                 </button>
 
-                            </motion.div>
+                            </div>
 
 
-                            {/*Navigate button now */}
-                            <motion.div variants={itemVariants}>
-                                <motion.div onClick={inputValidation}
-                                    disabled={isLoading}
-                                    style={{ ...styles.submitButton, ...(isLoading ? styles.submitButtonDisabled : {}), justifySelf: "center" }}
-                                    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(218, 151, 151, 0.4)" }}
-                                    whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
+                            {errors.userPassword && (
+                                <motion.p style={styles.errorMessage}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}>
 
+                                    {errors.userPassword}
 
-                                    {isLoading ? (<motion.div style={styles.spinner} animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />) : (
-                                        <>
-                                            Navigate To Account
+                                </motion.p>
+                            )}
 
-                                            <ArrowRight style={{ width: '20px', height: '20px' }} />
-                                        </>
-
-                                    )}
-
-                                </motion.div>
-
-                            </motion.div>
-
-
-                        </div>
-
-                        {/* Divider */}
-                        <motion.div variants={itemVariants} style={styles.divider}>
-                            <div style={styles.dividerLine}></div>
-                            <span style={styles.dividerText}>or sign in with</span>
-                            <div style={styles.dividerLine}></div>
                         </motion.div>
 
-                        {/* Social Login Buttons */}
-                        <motion.div variants={itemVariants} style={styles.socialButtons}>
-                            <motion.button
-                                style={styles.socialButton}
-                                variants={socialButtonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
-                                onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
-                            >
-                                Google
-                            </motion.button>
-                            <motion.button
-                                style={styles.socialButton}
-                                variants={socialButtonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
-                                onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
-                            >
-                                Roblox
-                            </motion.button>
-                            <motion.button
-                                style={styles.socialButton}
-                                variants={socialButtonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                                onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
-                                onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
-                            >
-                                Apple
-                            </motion.button>
+
+                        {/*Forget Key Link */}
+                        <motion.div variants={itemVariants}
+                            style={{ textAlign: 'center', marginBottom: '16px' }}>
+
+                            <button style={styles.forgotLink}
+                                onMouseEnter={(e) => e.target.style.color = '#ddd6fe'}
+                                onMouseDown={(e) => e.target.style.color = '#c084fc'}>
+
+                                Forgot Password?
+
+                            </button>
+
                         </motion.div>
+
+
+                        {/*Navigate button now */}
+                        <motion.div variants={itemVariants}>
+                            <motion.div onClick={inputValidation}
+                                disabled={isLoading}
+                                style={{ ...styles.submitButton, ...(isLoading ? styles.submitButtonDisabled : {}), justifySelf: "center" }}
+                                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(218, 151, 151, 0.4)" }}
+                                whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }}>
+
+
+                                {isLoading ? (<motion.div style={styles.spinner} animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />) : (
+                                    <>
+                                        Navigate To Account
+
+                                        <ArrowRight style={{ width: '20px', height: '20px' }} />
+                                    </>
+
+                                )}
+
+                            </motion.div>
+
+                        </motion.div>
+
+
+                    </div>
+
+                    {/* Divider */}
+                    <motion.div variants={itemVariants} style={styles.divider}>
+                        <div style={styles.dividerLine}></div>
+                        <span style={styles.dividerText}>or sign in with</span>
+                        <div style={styles.dividerLine}></div>
+                    </motion.div>
+
+                    {/* Social Login Buttons */}
+                    <motion.div variants={itemVariants} style={styles.socialButtons}>
+                        <motion.button
+                            style={styles.socialButton}
+                            variants={socialButtonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+                            onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+                        >
+                            Google
+                        </motion.button>
+                        <motion.button
+                            style={styles.socialButton}
+                            variants={socialButtonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+                            onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+                        >
+                            Roblox
+                        </motion.button>
+                        <motion.button
+                            style={styles.socialButton}
+                            variants={socialButtonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+                            onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+                        >
+                            Apple
+                        </motion.button>
                     </motion.div>
                 </motion.div>
-            </div>
-        </body>
+            </motion.div>
+        </div>
     )
 }
 
