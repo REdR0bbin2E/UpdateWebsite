@@ -54,7 +54,7 @@ function Signup() {
             newErrors.confirmPassword = 'Password must match'
 
         }
-
+        {/* adds the new errors to the setErrors hook*/ }
         setErrors(newErrors)
 
 
@@ -62,18 +62,20 @@ function Signup() {
             try {
                 setIsLoading(true)
                 await signupWithEmail(email, userPassword, username)
+                console.log(username)
                 alert('Account created successfully!')
                 //navigate to another screen here
                 //firebase requirements valid email, password atleast 6characters
 
             }
             catch (error) {
-                setErrors({ firebase: error.message }) //adding firebase error to my errors hook
-                alert('Account not created successfully.')
+                setErrors({ firebase: error.message }) //adding firebase error to my errors hook if user doesnt sign up right
+                alert('Account not created.')
 
             }
             finally {
                 setIsLoading(false)
+                //sets the loading for the submit form button to false 
             }
 
         }
