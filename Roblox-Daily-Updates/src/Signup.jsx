@@ -3,7 +3,9 @@ import { useState, useRef, useEffect, use } from 'react'
 import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
 import './Signup.css'
+import { signupWithEmail } from './auth' //importing the helper
 import { right } from '@popperjs/core'
+import { FirebaseError } from 'firebase/app'
 
 
 function Signup() {
@@ -29,7 +31,7 @@ function Signup() {
         }
     };
 
-    function inputValidation() {
+    async function inputValidation() {
         const newErrors = {}
         {/*For whitespace */ }
 
@@ -40,7 +42,7 @@ function Signup() {
         if (!email.trim()) {
             newErrors.email = 'Email is requried'
         }
-        else if (!/|S+@|S+/.test(email)) {
+        else if (!/\S+@\S+/.test(email)) {
             newErrors.email = 'Email is invalid'
         }
 
@@ -57,14 +59,23 @@ function Signup() {
 
 
         if (Object.keys(newErrors).length === 0) {
-            setIsLoading(true)
-            //Simulate API call
+            try {
+                setIsLoading(true)
+                await signupWithEmail(email, userPassword, username)
+                alert('Account created successfully!')
+                //navigate to another screen here
+                //firebase requirements valid email, password atleast 6characters
 
-            setTimeout(() => {
+            }
+            catch (error) {
+                setErrors({ firebase: error.message }) //adding firebase error to my errors hook
+                alert('Account not created successfully.')
+
+            }
+            finally {
                 setIsLoading(false)
-                alert('Navigating to project...')
+            }
 
-            }, 2000)
         }
     }
 
