@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, use } from 'react'
 import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
 import './Signup.css'
+import { useNavigate } from 'react-router-dom'
 import { signupWithEmail } from './auth' //importing the helper
 import { auth } from '../src/config/firebase'
 import { right } from '@popperjs/core'
@@ -18,6 +19,7 @@ function Signup() {
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
 
+    const navigate = useNavigate();
 
     {/* to prevent putting wrapping everything in <body> w classname andd freezing website smh*/ }
     useEffect(() => {
@@ -61,17 +63,18 @@ function Signup() {
 
         if (Object.keys(newErrors).length === 0) {
             try {
-                setIsLoading(true)
-                await signupWithEmail(email, userPassword, username);
+                setIsLoading(true) //tell the user the system is creating their acc
+                await signupWithEmail(email, userPassword, username); //wait for signupwithemail to go through
 
                 await auth.currentUser?.reload(); // make sure the latest data is loaded
 
-                console.log("Current User:", auth.currentUser);
+                console.log("Current User:", auth.currentUser); //display the current user and their displayname in the console
                 console.log("Display Name:", auth.currentUser?.displayName);
 
                 console.log(auth.currentUser);
 
                 alert('Account created successfully!')
+                navigate('/app')
                 //navigate to another screen here
                 //firebase requirements valid email, password atleast 6characters
 
@@ -432,6 +435,7 @@ function Signup() {
 
                     {/*Sign in instead button*/}
                     <motion.button
+                        onClick={() => navigate('/')} //to go from signin to login page B)
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.5 }}
                         style={styles.signIn}>

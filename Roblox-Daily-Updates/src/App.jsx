@@ -912,7 +912,7 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
 
 
-const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling"]
+const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing"]
 const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
 
 
@@ -1125,35 +1125,37 @@ function App() {
             <h3 className='Contributors' style={{ border: "4px solid black" }}>{date}</h3>
           </div>
 
-          {roles.map((_, index) => (
-            <motion.div onClick={() => setToDoListModalOpenToTrue(roles[index])} whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex", top: -375 }}>
-              < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
-                width: 195,
-                height: 195,
-                background: "rgb(18, 15, 15,0)",
-                borderRadius: 360, border: "8px solid rgb(0, 0, 0)",
-                padding: "1rem",
-                flexDirection: "row",
-                alignItems: "left",
-                gap: "12px",
-                justifyContent: "space-evenly",
-                position: "relative",
-                zIndex: 20,
+
+          <div style={{ alignSelf: "center", justifySelf: 'center', gap: '5rem', flexWrap: "wrap", display: "flex", justifyContent: "center", maxWidth: "10000px", top: -375, position: "relative" }}>
+            {roles.map((_, index) => (
+              <motion.div onClick={() => setToDoListModalOpenToTrue(roles[index])} whileHover={{ scale: 1.1, zIndex: 200 }} className='BackgroundRoles' style={{ backgroundColor: "black", position: "relative", display: "flex" }}>
+                < motion.button key={index} whileDrag={{ scale: 1.2 }} initial={{ scale: 1.1 }} style={{
+                  width: 240,
+                  height: 240,
+                  background: "rgb(18, 15, 15,0)",
+                  borderRadius: 360, border: "8px solid rgb(0, 0, 0)",
+                  padding: "1rem",
+                  flexDirection: "row",
+                  alignItems: "left",
+                  gap: "12px",
+                  justifyContent: "space-evenly",
+                  position: "relative",
+                  zIndex: 20,
 
 
 
 
-              }}>
+                }}>
 
 
-                <h2 style={{ textTransform: "uppercase" }}>{roles[index]}</h2>
+                  <h2 style={{ textTransform: "uppercase" }}>{roles[index]}</h2>
 
-              </motion.button>
+                </motion.button>
 
 
-            </motion.div>
-          ))}
-
+              </motion.div>
+            ))}
+          </div>
 
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
             <h1 className='Contributors' style={{ marginTop: "20%", border: "4px solid black" }} >CONTRIBUTORS</h1>

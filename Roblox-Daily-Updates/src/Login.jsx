@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
 import './Login.css'
+import { useNavigate } from 'react-router-dom'
 import { right } from '@popperjs/core'
 import { auth } from '../src/config/firebase'
 
@@ -13,6 +14,8 @@ function Login() {
     const [showKey, setShowKey] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
+
+    const navigate = useNavigate();
 
     {/* to prevent putting wrapping everything in <body> w classname andd freezing website smh*/ }
     useEffect(() => {
@@ -394,6 +397,7 @@ function Login() {
 
                     {/*Sign up instead button*/}
                     <motion.button
+                        onClick={() => navigate('/signup')}
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.5 }}
                         style={styles.signUp}>
