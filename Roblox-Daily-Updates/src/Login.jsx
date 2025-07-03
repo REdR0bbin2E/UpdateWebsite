@@ -4,6 +4,7 @@ import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
 import './Login.css'
 import { right } from '@popperjs/core'
+import { auth } from '../src/config/firebase'
 
 
 function Login() {

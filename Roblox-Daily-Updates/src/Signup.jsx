@@ -4,6 +4,7 @@ import { motion, AnimatePresence, scale } from 'framer-motion'
 import { Mail, User, Key, Eye, EyeOff, ArrowRight, Gamepad2 } from 'lucide-react'
 import './Signup.css'
 import { signupWithEmail } from './auth' //importing the helper
+import { auth } from '../src/config/firebase'
 import { right } from '@popperjs/core'
 import { FirebaseError } from 'firebase/app'
 
@@ -61,8 +62,15 @@ function Signup() {
         if (Object.keys(newErrors).length === 0) {
             try {
                 setIsLoading(true)
-                await signupWithEmail(email, userPassword, username)
-                console.log(username)
+                await signupWithEmail(email, userPassword, username);
+
+                await auth.currentUser?.reload(); // make sure the latest data is loaded
+
+                console.log("Current User:", auth.currentUser);
+                console.log("Display Name:", auth.currentUser?.displayName);
+
+                console.log(auth.currentUser);
+
                 alert('Account created successfully!')
                 //navigate to another screen here
                 //firebase requirements valid email, password atleast 6characters
@@ -70,6 +78,7 @@ function Signup() {
             }
             catch (error) {
                 setErrors({ firebase: error.message }) //adding firebase error to my errors hook if user doesnt sign up right
+
                 alert('Account not created.')
 
             }
