@@ -60,7 +60,7 @@ function Login() {
 
                 console.log("Current User:", auth.currentUser); //display the current user and their displayname in the console
                 console.log("Display Name:", auth.currentUser?.displayName);
-
+                navigate('/app')
                 alert('User logged in successfully!')
             }
             catch (error) {

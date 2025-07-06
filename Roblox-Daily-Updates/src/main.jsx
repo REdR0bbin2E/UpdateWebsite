@@ -10,6 +10,7 @@ import Login from './Login.jsx'
 import Signup from './Signup.jsx'
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './Dashboard.jsx';
 //for routing around the website
 
 //browserRouter is necessary and provides the URLS
@@ -21,7 +22,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/app' element={<App />} />
-
+        <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
 
     </BrowserRouter>
