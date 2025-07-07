@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Sidebar from './Sidebar'
+
 import { animate, AnimatePresence, motion, scale } from 'framer-motion'
 import FuuzynImage from '../src/assets/Roblox-avatars/FuuzynT.webp'
 import RedRobbin23Image from '../src/assets/Roblox-avatars/RedRobbin23T.webp'
@@ -994,9 +996,8 @@ function App() {
 
   return (
     <>
-
+      <Sidebar />
       <div>
-
 
 
         <h1 className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</h1>

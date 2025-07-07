@@ -1,0 +1,6 @@
+.dashboard-background {
+    background-image: linear-gradient(to left, #0f2027, #58265b, #ab22a7);
+    background-size: 600% 600%;
+    animation: background-change 30s ease infinite;
+    min-height: 100vh;
+}
