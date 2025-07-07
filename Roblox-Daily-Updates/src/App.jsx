@@ -914,6 +914,10 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
 
 
+
+
+
+
 const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing"]
 const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
 
@@ -966,7 +970,7 @@ function App() {
   const [category, setCategory] = useState("VFX");
   const [currentUser, setCurrentUser] = useState('');
   const [currentRole, setCurrentRole] = useState('');
-
+  const [screenWrapper, setScreenWrapper] = useState('5%');
   function setModalOpenToTrueAndPassUserName(name) {
     setModalOpen(true);
     setCurrentUser(name);
@@ -996,8 +1000,12 @@ function App() {
 
   return (
     <>
-      <Sidebar />
-      <div>
+      <div style={{ marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
+
+        <motion.div onHoverStart={() => setScreenWrapper("20%")} onHoverEnd={() => setScreenWrapper("5%")}>
+          <Sidebar />
+
+        </motion.div>
 
 
         <h1 className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</h1>
@@ -1178,7 +1186,6 @@ function App() {
           <h1 className='Contributors' style={{ position: "relative", border: "4px solid black" }}>ABOUT US</h1>
           <p style={{ fontWeight: "bold", fontSize: 20 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
         </div>
-
 
 
       </div >

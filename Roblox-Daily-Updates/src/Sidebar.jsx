@@ -1,26 +1,98 @@
-import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar } from 'lucide-react';
-import { useState } from 'react';
+import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar, X, ChevronLeft, ChevronDown } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, scale } from 'framer-motion'
 
 
 export default function Sidebar() {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const [activeItem, setActiveItem] = useState('Home');
+    const [logoutModal, setLogoutModal] = useState(false);
+    const [showProjects, setShowProjects] = useState(false);
+
+    navigation = useNavigate();
+
 
     const menuItems = [
-        { icon: <Home size={20} />, label: 'Home', badge: null },
-        { icon: <BarChart3 size={20} />, label: 'Analytics', badge: null },
-        { icon: <Users size={20} />, label: 'Team', badge: '12' },
+        { icon: <Home size={20} />, label: 'Dashboard', badge: null },
         { icon: <FileText size={20} />, label: 'Projects', badge: null },
-        { icon: <Calendar size={20} />, label: 'Calendar', badge: '3' },
-        { icon: <Bell size={20} />, label: 'Notifications', badge: '8' },
+        { icon: <Calendar size={20} />, label: 'Calendar', badge: null },
+        { icon: <Bell size={20} />, label: 'Notifications', badge: null },
         { icon: <Settings size={20} />, label: 'Settings', badge: null },
+        { icon: <X size={20} />, label: 'Log-Out', badge: null },
+
     ];
+
+    const projects = [
+        { name: "Project 1" },
+        { name: "Project 2" },
+        { name: "Project 3" },
+        { name: "Project 4" },
+        { name: "Project 5" },];
+
+    function navigationCenter(props) {
+
+        if (props == 'Dashboard') {
+            setActiveItem(props)
+            navigation('/dashboard')
+        }
+        else if (props == 'Log-Out') {
+            setActiveItem(props)
+
+            navigation('/')
+        }
+        else if (props == 'Settings') {
+            setActiveItem(props)
+            navigation('/settings')
+        }
+        else if (props == 'Projects') {
+            //setActiveItem(props)
+            setShowProjects(!showProjects)
+
+        }
+
+    }
+
+    function selectedProject(props) {
+        if (props == "Project 1") {
+            navigation('/app')
+        }
+        else if (props == "Project 2") {
+
+        }
+        else if (props == "Project 3") {
+
+        }
+        else if (props == "Project 4") {
+
+        }
+        else if (props == "Project 5") {
+
+        }
+    }
+
+    function endedHover() {
+        setIsCollapsed(!isCollapsed)
+        setShowProjects(false)
+    }
+
+    {/* Modal for logging out user */ }
+    const MyModal5 = ({ }) => {
+        modalUseRef = useRef(null)
+
+
+        return (
+            <div></div>
+
+        )
+
+
+    }
 
     return (
         <>
-            <motion.div onHoverStart={() => setIsCollapsed(!isCollapsed)} onHoverEnd={() => setIsCollapsed(!isCollapsed)} className='sidebar-container'>
-                <motion.div className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 z-50 shadow-2xl ${isCollapsed ? 'w-16' : 'w-64'
+            <motion.div onHoverStart={() => setIsCollapsed(!isCollapsed)} onHoverEnd={() => endedHover()} className='sidebar-container'>
+                <motion.div style={{ borderRightWidth: 1, borderStyle: "dashed" }} className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 z-50 shadow-2xl ${isCollapsed ? 'w-16' : 'w-64'
                     }`}>
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
@@ -30,7 +102,7 @@ export default function Sidebar() {
                                     <span className="text-white font-bold text-sm">M</span>
                                 </div>
                                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                                    MyApp
+                                    CrewCreate
                                 </h1>
                             </div>
                         )}
@@ -58,15 +130,39 @@ export default function Sidebar() {
                     {/* Navigation */}
                     <nav className="flex-1 p-4 space-y-1">
                         {menuItems.map((item) => (
-                            <SidebarLink
-                                key={item.label}
-                                icon={item.icon}
-                                label={item.label}
-                                badge={item.badge}
-                                isActive={activeItem === item.label}
-                                isCollapsed={isCollapsed}
-                                onClick={() => setActiveItem(item.label)}
-                            />
+                            <div>
+                                <SidebarLink
+                                    key={item.label}
+                                    icon={item.icon}
+                                    label={item.label}
+                                    badge={item.badge}
+                                    isActive={activeItem === item.label}
+                                    isCollapsed={isCollapsed}
+                                    onClick={() => navigationCenter(item.label)}
+                                >
+                                </SidebarLink>
+
+                                {isCollapsed && item.label == "Notifications" && (
+                                    <div style={{ marginTop: "225px" }} />
+                                )}
+                                {!isCollapsed && item.label == "Notifications" && (
+                                    <div style={{ marginTop: "30%" }} />
+                                )}
+
+                                {!isCollapsed && item.label == 'Projects' && showProjects && (
+                                    projects.map((item) => (
+                                        <div key={item.name} style={{ marginTop: "5%", marginLeft: "15%" }}>
+                                            <button onClick={() => selectedProject(item.name)} style={{ borderRadius: 15, borderWidth: 2, paddingLeft: "30%", paddingRight: "30%" }}>
+
+                                                {item.name}
+                                            </button>
+                                        </div>
+                                    ))
+                                )}
+
+
+
+                            </div>
                         ))}
                     </nav>
 
@@ -89,7 +185,7 @@ export default function Sidebar() {
                     {/* Footer */}
                     {!isCollapsed && (
                         <div className="p-4 text-xs text-slate-400 text-center border-t border-slate-700/50">
-                            © 2025 MyApp. All rights reserved.
+                            © 2025 Crew Create. All rights reserved.
                         </div>
                     )}
                 </motion.div>
@@ -105,7 +201,7 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, onClick }) {
             className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer group relative ${isActive
                 ? 'bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'hover:bg-slate-700/50'
-                } ${isCollapsed ? 'justify-center' : ''}`}
+                } ${isCollapsed ? 'justify-center' : ''} ${label == "Log-Out" && !isCollapsed && 'bg-red-500 hover:bg-red-600'} ${label == "Settings" && !isCollapsed && 'bg-blue-500 hover:bg-blue-600'} `}
         >
             <div className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
                 {icon}
@@ -115,11 +211,7 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, onClick }) {
                     <span className={`flex-1 font-medium ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
                         {label}
                     </span>
-                    {badge && (
-                        <span className="px-2 py-1 text-xs bg-red-500 text-white rounded-full">
-                            {badge}
-                        </span>
-                    )}
+
                 </>
             )}
 
@@ -134,6 +226,14 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, onClick }) {
                     )}
                 </div>
             )}
+
+            {!isCollapsed && label == "Projects" && (
+                <ChevronLeft style={{ marginLeft: "-35px" }} />
+            )
+            }
+
+
+
         </div>
     );
 }

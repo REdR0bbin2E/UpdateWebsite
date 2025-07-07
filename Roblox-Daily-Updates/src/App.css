@@ -54,3 +54,15 @@
 .read-the-docs {
   color: #888;
 }
+
+.tailwindstyle1 {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+}
+
+.tailwindstyle2 {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+}

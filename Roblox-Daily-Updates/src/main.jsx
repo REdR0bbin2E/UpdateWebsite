@@ -21,6 +21,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/app' element={<App />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/sidebar' element={<Sidebar />} />
+
       </Routes>
 
     </BrowserRouter>
