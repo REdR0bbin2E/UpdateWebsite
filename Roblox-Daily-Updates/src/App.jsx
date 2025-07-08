@@ -915,9 +915,6 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
 
 
-
-
-
 const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing"]
 const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
 

@@ -16,16 +16,46 @@ import { FirebaseError } from 'firebase/app'
 
 
 function Dashboard() {
+
+    const [screenWrapper, setScreenWrapper] = useState("5%");
+
+    const projects = [
+        { projectName: "The Raq", developers: ["Red", "Kirin", "Tripp", "Mag", "Rail", "Fuze"] },
+        { projectName: "New Project", developers: [""] },
+        { projectName: "New Project", developers: [""] },
+        { projectName: "New Project", developers: [""] },
+        { projectName: "New Project", developers: [""] }
+    ]
+
     useEffect(() => {
         document.body.classList.add('dashboard-background');
         return () => document.body.classList.remove('dashboard-background');
     }, []);
 
 
+
+
+
     return (
         <>
-            <Sidebar />
-            <div>
+
+            <div style={{ marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
+
+
+
+
+                <motion.div onHoverStart={() => setScreenWrapper("20%")} onHoverEnd={() => setScreenWrapper("5%")}>
+
+                    <Sidebar />
+
+                </motion.div>
+
+
+                <h1>DASHBOARD</h1>
+
+
+
+
 
             </div>
 

@@ -1,7 +1,7 @@
 import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar, X, ChevronLeft, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence, scale } from 'framer-motion'
+import { motion, AnimatePresence, scale, degrees } from 'framer-motion'
 
 
 export default function Sidebar() {
@@ -9,7 +9,7 @@ export default function Sidebar() {
     const [activeItem, setActiveItem] = useState('Home');
     const [logoutModal, setLogoutModal] = useState(false);
     const [showProjects, setShowProjects] = useState(false);
-
+    const [chevronDirection, changeChevronDirection] = useState("Left");
     navigation = useNavigate();
 
 
@@ -138,6 +138,7 @@ export default function Sidebar() {
                                     badge={item.badge}
                                     isActive={activeItem === item.label}
                                     isCollapsed={isCollapsed}
+                                    showProjects={showProjects}
                                     onClick={() => navigationCenter(item.label)}
                                 >
                                 </SidebarLink>
@@ -194,7 +195,7 @@ export default function Sidebar() {
     );
 }
 
-function SidebarLink({ icon, label, badge, isActive, isCollapsed, onClick }) {
+function SidebarLink({ icon, label, badge, isActive, isCollapsed, showProjects, onClick }) {
     return (
         <div
             onClick={onClick}
@@ -231,6 +232,10 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, onClick }) {
                 <ChevronLeft style={{ marginLeft: "-35px" }} />
             )
             }
+
+
+
+
 
 
 

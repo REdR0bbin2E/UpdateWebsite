@@ -8,6 +8,7 @@ import Signup from './Signup.jsx'
 import Sidebar from './Sidebar.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './Dashboard.jsx';
+import Settings from './Settings.jsx';
 //for routing around the website
 
 //browserRouter is necessary and provides the URLS
@@ -21,7 +22,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/app' element={<App />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/sidebar' element={<Sidebar />} />
-
+        <Route path='/settings' element={<Settings />} />
       </Routes>
 
     </BrowserRouter>
