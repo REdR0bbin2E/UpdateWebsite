@@ -10,6 +10,7 @@ export default function Sidebar() {
     const [logoutModal, setLogoutModal] = useState(false);
     const [showProjects, setShowProjects] = useState(false);
     const [chevronDirection, changeChevronDirection] = useState("Left");
+    const [menuLocked, setMenuLocked] = useState(false);
     navigation = useNavigate();
 
 
@@ -23,6 +24,7 @@ export default function Sidebar() {
 
     ];
 
+    //WIP letting user lock sidebar
     const projects = [
         { name: "Project 1" },
         { name: "Project 2" },
@@ -36,6 +38,15 @@ export default function Sidebar() {
             setActiveItem(props)
             navigation('/dashboard')
         }
+        else if (props == 'Calendar') {
+            setActiveItem(props)
+            navigation('/calendar')
+        }
+        else if (props == 'Projects') {
+            //setActiveItem(props)
+            setShowProjects(!showProjects)
+
+        }
         else if (props == 'Log-Out') {
             setActiveItem(props)
 
@@ -45,11 +56,7 @@ export default function Sidebar() {
             setActiveItem(props)
             navigation('/settings')
         }
-        else if (props == 'Projects') {
-            //setActiveItem(props)
-            setShowProjects(!showProjects)
 
-        }
 
     }
 
@@ -72,8 +79,37 @@ export default function Sidebar() {
     }
 
     function endedHover() {
-        setIsCollapsed(!isCollapsed)
-        setShowProjects(false)
+        if (menuLocked == false) {
+            setIsCollapsed(!isCollapsed)
+            setShowProjects(false)
+        }
+
+    }
+
+
+    function changeMenuLocked() {
+        setMenuLocked(!menuLocked)
+    }
+
+
+    function checkIfMenuIsLockedForOnHoverStart() {
+        if (menuLocked == false) {
+            setIsCollapsed(!isCollapsed)
+        }
+        else {
+            setIsCollapsed(false)
+        }
+
+    }
+
+    function checkIfMenuIsLockedForOnHoverEnd() {
+        if (isCollapsed == true) {
+            endedHover()
+        }
+        else {
+
+        }
+
     }
 
     {/* Modal for logging out user */ }
@@ -91,8 +127,8 @@ export default function Sidebar() {
 
     return (
         <>
-            <motion.div onHoverStart={() => setIsCollapsed(!isCollapsed)} onHoverEnd={() => endedHover()} className='sidebar-container'>
-                <motion.div style={{ borderRightWidth: 1, borderStyle: "dashed" }} className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 z-50 shadow-2xl ${isCollapsed ? 'w-16' : 'w-64'
+            <motion.div onHoverStart={() => checkIfMenuIsLockedForOnHoverStart()} onHoverEnd={() => endedHover()} className='sidebar-container'>
+                <motion.div style={{ borderRightWidth: 1, borderStyle: "dashed", borderRight: "4px solid black" }} className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 z-50 shadow-2xl ${isCollapsed ? 'w-16' : 'w-64'
                     }`}>
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
@@ -106,7 +142,7 @@ export default function Sidebar() {
                                 </h1>
                             </div>
                         )}
-                        <div
+                        <div onClick={() => changeMenuLocked()}
                             className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors"
                         >
                             <Menu size={20} />
@@ -168,10 +204,10 @@ export default function Sidebar() {
                     </nav>
 
                     {/* User Profile */}
-                    <div className="p-4 border-t border-slate-700/50">
-                        <div className={`flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : ''
+                    <button className="p-4 border-t border-slate-700/50">
+                        <div className={` flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : ''
                             }`}>
-                            <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
+                            <div style={{ padding: "0.5rem" }} className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
                                 <User size={16} className="text-white" />
                             </div>
                             {!isCollapsed && (
@@ -181,7 +217,7 @@ export default function Sidebar() {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </button>
 
                     {/* Footer */}
                     {!isCollapsed && (
