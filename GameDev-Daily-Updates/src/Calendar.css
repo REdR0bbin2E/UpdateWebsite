@@ -1,5 +1,5 @@
 .calendar-background {
-    background-image: linear-gradient(to left, #0f2027, #265b2c, #2dab22);
+    background-image: linear-gradient(to left, #0f2027, #265b2c, #2dab229c);
     background-size: 600% 600%;
     animation: background-change 30s ease infinite;
     min-height: 100vh;

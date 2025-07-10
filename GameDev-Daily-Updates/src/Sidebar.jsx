@@ -2,7 +2,7 @@ import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, C
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, scale, degrees } from 'framer-motion'
-import { logout } from './auth'
+import { logout } from './auth' //needs curly brackets because 
 import { auth } from '../src/config/firebase'
 import { FirebaseError } from 'firebase/app'
 
@@ -25,16 +25,18 @@ export default function Sidebar() {
     const [showProjects, setShowProjects] = useState(false);
     const [chevronDirection, changeChevronDirection] = useState("Left");
     const [menuLocked, setMenuLocked] = useState(false);
-    navigation = useNavigate();
+    const [showCreateProject, setShowCreateProject] = useState(false)
+    const [showSettingsModal, setShowSettingsModal] = useState(false)
+    const navigation = useNavigate();
 
 
     const menuItems = [
-        { icon: <Home size={20} />, label: 'Dashboard', badge: null },
+        { icon: <Home size={20} />, label: 'Home', badge: null },
         { icon: <FileText size={20} />, label: 'Projects', badge: null },
         { icon: <Calendar size={20} />, label: 'Calendar', badge: null },
         { icon: <Bell size={20} />, label: 'Notifications', badge: null },
         { icon: <Settings size={20} />, label: 'Settings', badge: null },
-        { icon: <X size={20} />, label: 'Log-Out', badge: null },
+        { icon: <X size={20} />, label: 'Sign Out', badge: null },
 
     ];
 
@@ -48,9 +50,9 @@ export default function Sidebar() {
 
     function navigationCenter(props) {
 
-        if (props == 'Dashboard') {
+        if (props == 'Home') {
             setActiveItem(props)
-            navigation('/dashboard')
+            navigation('/home')
         }
         else if (props == 'Calendar') {
             setActiveItem(props)
@@ -61,17 +63,77 @@ export default function Sidebar() {
             setShowProjects(!showProjects)
 
         }
-        else if (props == 'Log-Out') {
-            setActiveItem(props)
-            handleSignOut()
+        else if (props == 'Sign Out') {
+            setShowCreateProject(true)
         }
         else if (props == 'Settings') {
-            setActiveItem(props)
-            navigation('/settings')
+            setShowSettingsModal(true)
         }
 
 
     }
+
+
+    function settingsModal() {
+
+
+
+        return (
+            <AnimatePresence>
+                {showSettingsModal && (
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'rgba(0, 0, 0, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000,
+                        }}
+                        onClick={() => setShowSettingsModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            style={{
+                                background: 'rgba(0, 0, 0, 0.8)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '20px',
+                                padding: '40px',
+                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                textAlign: 'center',
+                                minWidth: '400px'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 style={{ marginBottom: '20px' }}>Sign out of account?</h2>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                                padding: "2rem"
+                            }}>
+
+
+
+
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        )
+    }
+
 
     function selectedProject(props) {
         if (props == "Project 1") {
@@ -127,7 +189,7 @@ export default function Sidebar() {
 
     {/* Modal for logging out user */ }
     const MyModal5 = ({ }) => {
-        modalUseRef = useRef(null)
+        const modalUseRef = useRef(null)
 
 
         return (
@@ -179,9 +241,8 @@ export default function Sidebar() {
                     {/* Navigation */}
                     <nav className="flex-1 p-4 space-y-1">
                         {menuItems.map((item) => (
-                            <div>
+                            <div key={item.label}>
                                 <SidebarLink
-                                    key={item.label}
                                     icon={item.icon}
                                     label={item.label}
                                     badge={item.badge}
@@ -200,14 +261,28 @@ export default function Sidebar() {
                                 )}
 
                                 {!isCollapsed && item.label == 'Projects' && showProjects && (
-                                    projects.map((item) => (
-                                        <div key={item.name} style={{ marginTop: "5%", marginLeft: "15%" }}>
-                                            <button onClick={() => selectedProject(item.name)} style={{ borderRadius: 15, borderWidth: 2, paddingLeft: "30%", paddingRight: "30%" }}>
-
-                                                {item.name}
-                                            </button>
-                                        </div>
-                                    ))
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="ml-4 mt-2 space-y-1"
+                                    >
+                                        {projects.map((project) => (
+                                            <motion.button
+                                                key={project.name}
+                                                onClick={() => selectedProject(project.name)}
+                                                className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                    {project.name}
+                                                </div>
+                                            </motion.button>
+                                        ))}
+                                    </motion.div>
                                 )}
 
 
@@ -240,6 +315,145 @@ export default function Sidebar() {
                     )}
                 </motion.div>
             </motion.div>
+
+
+            <AnimatePresence>
+                {showCreateProject && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'rgba(0, 0, 0, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000,
+                        }}
+                        onClick={() => setShowCreateProject(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            style={{
+                                background: 'rgba(0, 0, 0, 0.8)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '20px',
+                                padding: '40px',
+                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                textAlign: 'center',
+                                minWidth: '400px'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 style={{ marginBottom: '20px' }}>Sign out of account?</h2>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                                padding: "2rem"
+                            }}>
+                                <button
+                                    style={{
+                                        background: 'rgba(255, 255, 255, 0.2)',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        color: 'white',
+                                        padding: '12px 24px',
+                                        paddingLeft: "3rem",
+                                        paddingRight: "3rem",
+                                        borderRadius: '10px',
+                                        cursor: 'pointer',
+                                        fontSize: '1rem'
+                                    }}
+                                    onClick={() => setShowCreateProject(false)}
+                                >
+                                    No
+                                </button>
+
+                                <button
+                                    style={{
+                                        background: 'rgba(255, 20, 20, 0.2)',
+                                        border: '1px solid rgba(255, 20, 20, 0.3)',
+                                        color: 'white',
+                                        padding: '12px 24px',
+                                        borderRadius: '10px',
+                                        paddingLeft: "3rem",
+                                        paddingRight: "3rem",
+                                        cursor: 'pointer',
+                                        fontSize: '1rem'
+                                    }}
+                                    onClick={() => handleSignOut()}
+                                >
+                                    Yes
+                                </button>
+
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+
+
+            <AnimatePresence>
+                {showSettingsModal && (
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'rgba(0, 0, 0, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000,
+                        }}
+                        onClick={() => setShowSettingsModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            style={{
+                                background: 'rgba(0, 0, 0, 0.8)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '20px',
+                                padding: '40px',
+                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                textAlign: 'center',
+                                minWidth: '400px'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 style={{ marginBottom: '20px' }}>Sign out of account?</h2>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                                padding: "2rem"
+                            }}>
+
+
+
+
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
         </>
     );
 }
@@ -251,7 +465,7 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, showProjects, 
             className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer group relative ${isActive
                 ? 'bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg'
                 : 'hover:bg-slate-700/50'
-                } ${isCollapsed ? 'justify-center' : ''} ${label == "Log-Out" && !isCollapsed && 'bg-red-500 hover:bg-red-600'} ${label == "Settings" && !isCollapsed && 'bg-blue-500 hover:bg-blue-600'} `}
+                } ${isCollapsed ? 'justify-center' : ''} ${label == "Sign Out" && !isCollapsed && 'bg-red-500 hover:bg-red-600'} ${label == "Settings" && !isCollapsed && 'bg-blue-500 hover:bg-blue-600'} `}
         >
             <div className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
                 {icon}
@@ -278,16 +492,14 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, showProjects, 
             )}
 
             {!isCollapsed && label == "Projects" && (
-                <ChevronLeft style={{ marginLeft: "-35px" }} />
-            )
-            }
-
-
-
-
-
-
-
+                <motion.div
+                    animate={{ rotate: showProjects ? -90 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="ml-auto"
+                >
+                    <ChevronLeft size={16} />
+                </motion.div>
+            )}
         </div>
     );
 }

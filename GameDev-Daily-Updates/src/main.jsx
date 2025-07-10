@@ -7,8 +7,7 @@ import App from './App.jsx'
 import Login from './Login.jsx'
 import Signup from './Signup.jsx'
 import Sidebar from './Sidebar.jsx'
-import Dashboard from './Dashboard.jsx';
-import Settings from './Settings.jsx';
+import Home from './Home.jsx';
 import Calendar from './Calendar.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 // src/auth.js
@@ -75,19 +74,14 @@ createRoot(document.getElementById('root')).render(
           </PrivateRoute>
 
         } />
-        <Route path='/dashboard' element={
+        <Route path='/home' element={
           <PrivateRoute>
-            <Dashboard />
+            <Home />
           </PrivateRoute>
         } />
         <Route path='/sidebar' element={
           <PrivateRoute>
             <Sidebar />
-          </PrivateRoute>
-        } />
-        <Route path='/settings' element={
-          <PrivateRoute>
-            <Settings />
           </PrivateRoute>
         } />
         <Route path='/calendar' element={

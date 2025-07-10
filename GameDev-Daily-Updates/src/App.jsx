@@ -1005,18 +1005,17 @@ function App() {
         </motion.div>
 
 
-        <h1 className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</h1>
-        <p style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </p>
+        <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</motion.h1>
+        <motion.p initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </motion.p>
 
 
         <div>
 
-          {/*Add calendar component here*/}
           <div style={{ marginTop: "10%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
-            <motion.button onClick={() => setUploadModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} onClick={() => setUploadModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
 
 
-            <motion.button onClick={() => setAllUpdatesModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>All Updates!</motion.button>  {/*Button that redirects to date selected */}
+            <motion.button initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} onClick={() => setAllUpdatesModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>All Updates!</motion.button>  {/*Button that redirects to date selected */}
           </div>
           <MyModal currentUser={currentUser} isOpen={modalOpen} onClose={() => setModalOpen(false)}>
           </MyModal>
@@ -1039,14 +1038,19 @@ function App() {
 
 
 
-        <div style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          gap: "16px", // or use margin on buttons instead
-          width: "100%",
-          marginTop: "2rem",
-        }}>
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            gap: "16px", // or use margin on buttons instead
+            width: "100%",
+            marginTop: "2rem",
+          }}>
 
 
           {developers.map((_, index) => (
@@ -1175,7 +1179,7 @@ function App() {
 
 
 
-        </div >
+        </motion.div >
 
 
         <div>
