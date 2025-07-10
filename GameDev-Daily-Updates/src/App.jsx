@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import VerticalScroller from './VerticalScroller'
 import Sidebar from './Sidebar'
 
 import { animate, AnimatePresence, motion, scale } from 'framer-motion'
@@ -1004,6 +1005,7 @@ function App() {
 
         </motion.div>
 
+        <VerticalScroller />
 
         <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</motion.h1>
         <motion.p initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </motion.p>
@@ -1168,11 +1170,15 @@ function App() {
           </div>
 
           <div style={{ position: "relative", zIndex: 10, top: -475, alignContent: "center", flex: 1 }}>
-            <h1 className='Contributors' style={{ marginTop: "20%", border: "4px solid black" }} >CONTRIBUTORS</h1>
+            <h1 className='Contributors' style={{ marginTop: "20%", border: "4px solid black" }} >TEAM PRODUCTIVITY</h1>
 
-            <motion.div className='Contributors' whileHover={{ scale: 1.01 }} style={{ backgroundColor: "black", width: "100%", height: "100%", border: "4px solid black", borderRadius: 25, }}>
+            <motion.div className='Contributors' whileHover={{ scale: 1.01 }} style={{ backgroundColor: "black", width: "100%", height: "135%", border: "4px solid black", borderRadius: 25, }}>
 
+              In here have 3 different characters
 
+              1. Average number of updates a week maybe pi chart if number is greater than 1.0 then say 100%+
+              2. All time most to least update contributions by developers
+              3.
             </motion.div>
           </div>
 
@@ -1184,8 +1190,7 @@ function App() {
 
         <div>
 
-          <h1 className='Contributors' style={{ position: "relative", border: "4px solid black" }}>ABOUT US</h1>
-          <p style={{ fontWeight: "bold", fontSize: 20 }}>Hello World we're The Raq! Essentially we're just a group of childhood friends that decided to create a fully functional and revenue generating game together. We all come from different walks of life and are experienced in our own reguards. Thank you for visiting our page and keep creating!</p>
+          <h1 className='Contributors' style={{ position: "relative", border: "4px solid black" }}>MILESTONES</h1>
         </div>
 
 
