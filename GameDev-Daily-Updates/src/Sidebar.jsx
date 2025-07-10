@@ -2,9 +2,23 @@ import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, C
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, scale, degrees } from 'framer-motion'
-
+import { logout } from './auth'
+import { auth } from '../src/config/firebase'
+import { FirebaseError } from 'firebase/app'
 
 export default function Sidebar() {
+
+    const handleSignOut = async () => {
+        try {
+            await logout();
+            alert('User logged out successfully!')
+            navigation("/")
+        } catch (error) {
+            alert("User not logged out successfully.")
+        }
+    }
+
+
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [activeItem, setActiveItem] = useState('Home');
     const [logoutModal, setLogoutModal] = useState(false);
@@ -49,8 +63,7 @@ export default function Sidebar() {
         }
         else if (props == 'Log-Out') {
             setActiveItem(props)
-
-            navigation('/')
+            handleSignOut()
         }
         else if (props == 'Settings') {
             setActiveItem(props)

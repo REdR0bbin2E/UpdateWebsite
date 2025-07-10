@@ -10,6 +10,53 @@ import Sidebar from './Sidebar.jsx'
 import Dashboard from './Dashboard.jsx';
 import Settings from './Settings.jsx';
 import Calendar from './Calendar.jsx';
+import PrivateRoute from './PrivateRoute.jsx';
+// src/auth.js
+import { auth } from '../src/config/firebase'
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+
+export const signupWithEmail = async (email, password, username) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+    await updateProfile(userCredential.user, {
+      displayName: username,
+    });
+
+
+    await userCredential.user.reload(); // optional
+    return userCredential.user;
+
+
+  }
+  catch (error) {
+    console.error("Signup error:", error);
+    throw error;
+  }
+};
+
+
+export const signinWithEmail = async (email, password) => {
+  try {
+    const userInfo = await signInWithEmailAndPassword(auth, email, password);
+
+
+    await userInfo.user.reload();
+    return userInfo.user;
+
+  }
+  catch (error) {
+    console.error("Signin error", error);
+    throw error;
+  }
+
+
+}
+
+export const logout = async () => {
+  return signOut(auth)
+
+}
 
 
 //for routing around the website
@@ -22,11 +69,32 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/app' element={<App />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/sidebar' element={<Sidebar />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/calendar' element={<Calendar />} />
+        <Route path='/app' element={
+          <PrivateRoute>
+            <App />
+          </PrivateRoute>
+
+        } />
+        <Route path='/dashboard' element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        } />
+        <Route path='/sidebar' element={
+          <PrivateRoute>
+            <Sidebar />
+          </PrivateRoute>
+        } />
+        <Route path='/settings' element={
+          <PrivateRoute>
+            <Settings />
+          </PrivateRoute>
+        } />
+        <Route path='/calendar' element={
+          <PrivateRoute>
+            <Calendar />
+          </PrivateRoute>
+        } />
       </Routes>
 
     </BrowserRouter>

@@ -1,6 +1,6 @@
 // src/auth.js
 import { auth } from '../src/config/firebase'
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
 export const signupWithEmail = async (email, password, username) => {
     try {
@@ -37,5 +37,10 @@ export const signinWithEmail = async (email, password) => {
         throw error;
     }
 
+
+}
+
+export const logout = async () => {
+    return signOut(auth)
 
 }
