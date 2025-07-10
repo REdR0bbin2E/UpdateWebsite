@@ -1,4 +1,4 @@
-import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar, X, ChevronLeft, ChevronDown } from 'lucide-react';
+import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar, X, ChevronLeft, ChevronDown, Gamepad } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, scale, degrees } from 'framer-motion'
@@ -27,6 +27,7 @@ export default function Sidebar() {
     const [menuLocked, setMenuLocked] = useState(false);
     const [showCreateProject, setShowCreateProject] = useState(false)
     const [showSettingsModal, setShowSettingsModal] = useState(false)
+    const [showProfileModal, setShowProfileModal] = useState(false)
     const navigation = useNavigate();
 
 
@@ -42,7 +43,7 @@ export default function Sidebar() {
 
     //WIP letting user lock sidebar
     const projects = [
-        { name: "Project 1" },
+        { name: "The Raq" },
         { name: "Project 2" },
         { name: "Project 3" },
         { name: "Project 4" },
@@ -136,7 +137,7 @@ export default function Sidebar() {
 
 
     function selectedProject(props) {
-        if (props == "Project 1") {
+        if (props == "The Raq") {
             navigation('/app')
         }
         else if (props == "Project 2") {
@@ -209,8 +210,10 @@ export default function Sidebar() {
                     <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
                         {!isCollapsed && (
                             <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                    <span className="text-white font-bold text-sm">M</span>
+                                <div style={{ borderRadius: 12 }} className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <span className="text-white font-bold text-sm">
+                                        <Gamepad />
+                                    </span>
                                 </div>
                                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                                     CrewCreate
@@ -292,7 +295,7 @@ export default function Sidebar() {
                     </nav>
 
                     {/* User Profile */}
-                    <button className="p-4 border-t border-slate-700/50">
+                    <button onClick={() => setShowProfileModal(true)} className="p-4 border-t border-slate-700/50">
                         <div className={` flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : ''
                             }`}>
                             <div style={{ padding: "0.5rem" }} className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
@@ -342,7 +345,7 @@ export default function Sidebar() {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.5, opacity: 0 }}
                             style={{
-                                background: 'rgba(0, 0, 0, 0.8)',
+                                background: 'rgba(0, 0, 0, 0.4)',
                                 backdropFilter: 'blur(20px)',
                                 borderRadius: '20px',
                                 padding: '40px',
@@ -438,7 +441,7 @@ export default function Sidebar() {
                             }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h2 style={{ marginBottom: '20px' }}>Sign out of account?</h2>
+
                             <div style={{
                                 display: "flex",
                                 justifyContent: "space-evenly",
@@ -453,6 +456,70 @@ export default function Sidebar() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+
+
+
+            <AnimatePresence>
+                {showProfileModal && (
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'rgba(0, 0, 0, 0.4)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000,
+                        }}
+                        onClick={() => setShowProfileModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0, x: -50 }}
+                            animate={{ scale: 1, opacity: 1, x: 0 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            style={{
+                                background: 'rgba(0, 0, 0, 0.8)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '20px',
+                                padding: '20px',
+                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                textAlign: 'center',
+                                minWidth: '300px'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+
+                            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} style={{
+                                padding: "2rem"
+                            }}>
+
+
+                                <motion.div initial={{ opacity: 0.5 }} animate={{ opacity: 1 }} transition={{ delay: 0.05 }}
+                                >
+                                    <h2>ACCOUNT INFORMATION</h2>
+                                    <button style={{ marginTop: "5%", borderRadius: 360, width: 150, height: 150 }}>
+                                        Profile Picture
+                                    </button>
+
+                                    <p>Email : Mayo.akin3@gmail.com</p>
+                                    <p>Display Name: RedRobbin23</p>
+                                    <p>Join Date: 07/05/2025</p>
+                                </motion.div>
+
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence >
 
         </>
     );
