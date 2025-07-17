@@ -5,6 +5,12 @@ import './Calendar.css'
 import './index.css'
 import Sidebar from './Sidebar'
 
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+
+const events = [
+    { title: 'Meeting', start: new Date() }
+]
 
 {/* to prevent putting wrapping everything in <body> w classname andd freezing website smh*/ }
 

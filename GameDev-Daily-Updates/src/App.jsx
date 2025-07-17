@@ -4,7 +4,6 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import VerticalScroller from './VerticalScroller'
 import Sidebar from './Sidebar'
-
 import { animate, AnimatePresence, motion, scale } from 'framer-motion'
 import FuuzynImage from '../src/assets/Roblox-avatars/FuuzynT.webp'
 import RedRobbin23Image from '../src/assets/Roblox-avatars/RedRobbin23T.webp'
@@ -1005,15 +1004,25 @@ function App() {
 
         </motion.div>
 
-        <VerticalScroller />
+
+
+        {allUpdatesModalOpen == false && modalOpen == false && uploadModalOpen == false && toDoListModalOpen == false && (
+          <VerticalScroller />
+
+        )
+
+        }
 
         <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</motion.h1>
         <motion.p initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </motion.p>
 
 
         <div>
+          <motion.button initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginTop: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>Team Chat!</motion.button>  {/*Button that redirects to date selected */}
 
-          <div style={{ marginTop: "10%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
+
+          <div style={{ marginTop: "5%", justifyContent: "space-between", flexDirection: "row", display: "flex" }}>
+
             <motion.button initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} onClick={() => setUploadModalOpenToTrue()} whileHover={{ backgroundColor: "#000a", scale: 1.1 }} style={{ marginBottom: "5%", width: "45%", border: "6px solid rgba(0, 0, 0, 0.83)", borderLeft: 20, borderTop: 20 }}>Post Update!</motion.button>  {/*Button that redirects to date selected */}
 
 
@@ -1178,7 +1187,7 @@ function App() {
 
               1. Average number of updates a week maybe pi chart if number is greater than 1.0 then say 100%+
               2. All time most to least update contributions by developers
-              3.
+              3. AI weekly overview of productivity get some dividers in here
             </motion.div>
           </div>
 

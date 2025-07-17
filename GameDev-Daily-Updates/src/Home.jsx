@@ -7,7 +7,7 @@ import { left } from '@popperjs/core';
 function Home() {
     const [screenWrapper, setScreenWrapper] = useState("5%");
     const [showCreateProject, setShowCreateProject] = useState(false);
-
+    const [showAddProject, setShowAddProject] = useState(false);
     const projects = [
         {
             id: 1,
@@ -119,7 +119,9 @@ function Home() {
         display: 'flex',
         alignItems: 'center',
         gap: '20px',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        width: "45%"
+
     };
 
     const createProjectBoxStyles = {
@@ -299,25 +301,59 @@ function Home() {
                         )}
 
                         {hasProjects && (
-                            <div style={{
-                                ...createProjectStyles,
-                                justifyContent: 'center',
-                                marginTop: '20px',
-                                padding: '20px',
-                                border: '2px dashed rgba(255, 255, 255, 0.3)',
-                                borderRadius: '15px',
-                                cursor: 'pointer'
-                            }}
-                                onClick={() => setShowCreateProject(true)}
-                            >
-                                <Plus size={24} color="rgba(255, 255, 255, 0.7)" />
-                                <span style={{
-                                    color: 'rgba(255, 255, 255, 0.7)',
-                                    fontSize: '1.1rem',
-                                    marginLeft: '10px'
-                                }}>
-                                    Add New Project
-                                </span>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                <div style={{
+                                    ...createProjectStyles,
+                                    justifyContent: 'center',
+                                    marginTop: '20px',
+                                    padding: '20px',
+                                    border: '2px dashed rgba(255, 255, 255, 0.3)',
+                                    borderRadius: '15px',
+                                    cursor: 'pointer'
+                                }}
+                                    onClick={() => setShowCreateProject(true)}
+                                >
+                                    <div>
+                                        <Plus size={24} color="rgba(255, 255, 255, 0.7)" />
+                                        <span style={{
+                                            color: 'rgba(255, 255, 255, 0.7)',
+                                            fontSize: '1.1rem',
+                                            marginLeft: '10px'
+                                        }}>
+                                            Create New Project
+                                        </span>
+
+                                    </div >
+
+
+
+                                </div>
+                                <div style={{
+                                    ...createProjectStyles,
+                                    justifyContent: 'center',
+                                    marginTop: '20px',
+                                    padding: '20px',
+                                    border: '2px dashed rgba(255, 255, 255, 0.3)',
+                                    borderRadius: '15px',
+                                    cursor: 'pointer'
+                                }}
+                                    onClick={() => setShowAddProject(true)}
+                                >
+                                    <div>
+                                        <Plus size={24} color="rgba(255, 255, 255, 0.7)" />
+                                        <span style={{
+                                            color: 'rgba(255, 255, 255, 0.7)',
+                                            fontSize: '1.1rem',
+                                            marginLeft: '10px'
+                                        }}>
+                                            Add New Project
+                                        </span>
+
+                                    </div >
+
+
+
+                                </div>
                             </div>
                         )}
                     </div>
@@ -401,6 +437,23 @@ function Home() {
                             <p style={{ marginBottom: '30px', opacity: 0.8 }}>
                                 This would be your project creation form...
                             </p>
+
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                <input placeholder='Project Name' style={{ borderRadius: 10, fontSize: 25, marginBottom: "10px" }}></input>
+
+                                <input placeholder='Project ID' style={{ borderRadius: 10, fontSize: 25, marginBottom: "10px" }}></input>
+                                <select style={{ borderRadius: 10, fontSize: 25, marginBottom: "45px" }}>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+
+
+                                </select>
+
+                            </div>
                             <button
                                 style={{
                                     background: 'rgba(255, 255, 255, 0.2)',
@@ -412,6 +465,75 @@ function Home() {
                                     fontSize: '1rem'
                                 }}
                                 onClick={() => setShowCreateProject(false)}
+                            >
+                                Close
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+
+            <AnimatePresence>
+                {showAddProject && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'rgba(0, 0, 0, 0.8)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 2000
+                        }}
+                        onClick={() => setShowAddProject(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                backdropFilter: 'blur(20px)',
+                                borderRadius: '20px',
+                                padding: '40px',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                color: 'white',
+                                textAlign: 'center',
+                                minWidth: '400px'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 style={{ marginBottom: '20px' }}>Add New Project</h2>
+                            <p style={{ marginBottom: '30px', opacity: 0.8 }}>
+                                This would be your project adding form...
+                            </p>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                <input placeholder='Project Name' style={{ borderRadius: 10, fontSize: 25, marginBottom: "10px" }}></input>
+
+                                <input placeholder='Project ID' style={{ borderRadius: 10, fontSize: 25, marginBottom: "25px" }}></input>
+
+
+                            </div>
+
+
+                            <button
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.2)',
+                                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    borderRadius: '10px',
+                                    cursor: 'pointer',
+                                    fontSize: '1rem'
+                                }}
+                                onClick={() => setShowAddProject(false)}
                             >
                                 Close
                             </button>
