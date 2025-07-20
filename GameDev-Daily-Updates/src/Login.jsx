@@ -8,6 +8,7 @@ import { signinWithEmail } from './auth'
 import { right } from '@popperjs/core'
 import { auth } from '../src/config/firebase'
 import { FirebaseError } from 'firebase/app'
+import { } from '../src/config/firebase'
 
 
 function Login() {

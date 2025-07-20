@@ -481,7 +481,12 @@ const MyModal3 = ({ isOpen, onClose, children }) => {
           }}
           onClick={onClose}
         >
-          <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} style={{ border: "6px solid black", marginTop: "5%", marginRight: "5%", width: 500, height: 500 }} src={RogueLineageImage} />
+          <motion.div onClick={e => e.stopPropagation()}
+            onKeyDown={handleKeyDown}
+            tabIndex={-1} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ background: "rgba(50,50,50,1)", border: "6px solid black", marginTop: "5%", marginRight: "5%", width: "500px", height: "535px", borderRadius: 20, justifyContent: "center", alignContent: "center" }}>
+            <h3>Select an Update to view</h3>
+
+          </motion.div>
 
           <motion.div
             ref={modalRef}
@@ -545,7 +550,7 @@ const MyModal3 = ({ isOpen, onClose, children }) => {
                 position: "relative",
                 overflowY: "auto",
                 padding: "20px",
-                left: "4%",
+                left: "2%",
                 scrollbarWidth: "none"
 
               }}
@@ -997,7 +1002,7 @@ function App() {
 
   return (
     <>
-      <div style={{ marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
+      <div style={{ transition: "0.3s ease", marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
 
         <motion.div onHoverStart={() => setScreenWrapper("20%")} onHoverEnd={() => setScreenWrapper("5%")}>
           <Sidebar />

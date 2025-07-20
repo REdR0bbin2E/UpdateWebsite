@@ -31,7 +31,7 @@ function Calendar() {
     return (
         <>
 
-            <div style={{ marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
+            <div style={{ transition: "0.3 ease", marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
 
 
 

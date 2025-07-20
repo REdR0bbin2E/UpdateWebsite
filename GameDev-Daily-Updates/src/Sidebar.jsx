@@ -20,7 +20,7 @@ export default function Sidebar() {
 
 
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [activeItem, setActiveItem] = useState('Home');
+    const [activeItem, setActiveItem] = useState('');
     const [logoutModal, setLogoutModal] = useState(false);
     const [showProjects, setShowProjects] = useState(false);
     const [chevronDirection, changeChevronDirection] = useState("Left");
@@ -205,6 +205,7 @@ export default function Sidebar() {
         <>
             <motion.div onHoverStart={() => checkIfMenuIsLockedForOnHoverStart()} onHoverEnd={() => endedHover()} className='sidebar-container'>
                 <motion.div style={{ borderRightWidth: 1, borderStyle: "dashed", borderRight: "4px solid black" }} className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col transition-all duration-300 z-50 shadow-2xl ${isCollapsed ? 'w-16' : 'w-64'
+                    } ${isCollapsed ? 'max-h-1000px' : 'max-h-410px'
                     }`}>
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
@@ -242,57 +243,60 @@ export default function Sidebar() {
                     )}
 
                     {/* Navigation */}
-                    <nav className="flex-1 p-4 space-y-1">
-                        {menuItems.map((item) => (
-                            <div key={item.label}>
-                                <SidebarLink
-                                    icon={item.icon}
-                                    label={item.label}
-                                    badge={item.badge}
-                                    isActive={activeItem === item.label}
-                                    isCollapsed={isCollapsed}
-                                    showProjects={showProjects}
-                                    onClick={() => navigationCenter(item.label)}
-                                >
-                                </SidebarLink>
-
-                                {isCollapsed && item.label == "Notifications" && (
-                                    <div style={{ marginTop: "225px" }} />
-                                )}
-                                {!isCollapsed && item.label == "Notifications" && (
-                                    <div style={{ marginTop: "30%" }} />
-                                )}
-
-                                {!isCollapsed && item.label == 'Projects' && showProjects && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="ml-4 mt-2 space-y-1"
+                    <div style={{ overflowY: "scroll", scrollbarWidth: "none" }}>
+                        <nav className="flex-1 p-4 space-y-1">
+                            {menuItems.map((item) => (
+                                <div key={item.label}>
+                                    <SidebarLink
+                                        icon={item.icon}
+                                        label={item.label}
+                                        badge={item.badge}
+                                        isActive={activeItem === item.label}
+                                        isCollapsed={isCollapsed}
+                                        showProjects={showProjects}
+                                        onClick={() => navigationCenter(item.label)}
                                     >
-                                        {projects.map((project) => (
-                                            <motion.button
-                                                key={project.name}
-                                                onClick={() => selectedProject(project.name)}
-                                                className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
-                                                whileHover={{ scale: 1.02 }}
-                                                whileTap={{ scale: 0.98 }}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                                    {project.name}
-                                                </div>
-                                            </motion.button>
-                                        ))}
-                                    </motion.div>
-                                )}
+                                    </SidebarLink>
+
+                                    {isCollapsed && item.label == "Notifications" && (
+                                        <div style={{ marginTop: "225px" }} />
+                                    )}
+                                    {!isCollapsed && item.label == "Notifications" && (
+                                        <div style={{ marginTop: "30%" }} />
+                                    )}
+
+                                    {!isCollapsed && item.label == 'Projects' && showProjects && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: "auto" }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="ml-4 mt-2 space-y-1"
+                                        >
+                                            {projects.map((project) => (
+                                                <motion.button
+                                                    key={project.name}
+                                                    onClick={() => selectedProject(project.name)}
+                                                    className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                                        {project.name}
+                                                    </div>
+                                                </motion.button>
+                                            ))}
+                                        </motion.div>
+                                    )}
 
 
 
-                            </div>
-                        ))}
-                    </nav>
+                                </div>
+                            ))}
+                        </nav>
+                    </div>
+
 
                     {/* User Profile */}
                     <button onClick={() => setShowProfileModal(true)} className="p-4 border-t border-slate-700/50">
@@ -527,6 +531,7 @@ export default function Sidebar() {
 
 function SidebarLink({ icon, label, badge, isActive, isCollapsed, showProjects, onClick }) {
     return (
+
         <div
             onClick={onClick}
             className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 cursor-pointer group relative ${isActive
@@ -568,5 +573,6 @@ function SidebarLink({ icon, label, badge, isActive, isCollapsed, showProjects, 
                 </motion.div>
             )}
         </div>
+
     );
 }

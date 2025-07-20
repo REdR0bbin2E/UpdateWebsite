@@ -8,6 +8,8 @@ import { signupWithEmail } from './auth' //importing the helper
 import { auth } from '../src/config/firebase'
 import { right } from '@popperjs/core'
 import { FirebaseError } from 'firebase/app'
+import { db } from './config/firebase'
+import { getDocs, collection, addDoc, setDoc, doc } from 'firebase/firestore'
 
 
 function Signup() {
@@ -18,6 +20,15 @@ function Signup() {
     const [showKey, setShowKey] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [errors, setErrors] = useState({})
+    const [createdProjects, setCreatedProjects] = useState({})
+    const [joinedProjects, setJoinedProjects] = useState({})
+
+
+
+    const usersCollectionRef = collection(db, "users")
+
+
+
 
     const navigate = useNavigate();
 
@@ -74,6 +85,8 @@ function Signup() {
                 console.log(auth.currentUser);
 
                 alert('Account created successfully!')
+                await setDoc(doc(usersCollectionRef, auth.currentUser.email), { id: auth.currentUser.email, displayName: username, joinedProjects: joinedProjects, createdProjects: createdProjects }, { merge: true })
+
                 navigate('/app')
                 //navigate to another screen here
                 //firebase requirements valid email, password atleast 6characters
