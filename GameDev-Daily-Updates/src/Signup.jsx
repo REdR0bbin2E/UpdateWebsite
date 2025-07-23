@@ -85,7 +85,10 @@ function Signup() {
                 console.log(auth.currentUser);
 
                 alert('Account created successfully!')
-                await setDoc(doc(usersCollectionRef, auth.currentUser.email), { id: auth.currentUser.email, displayName: username, joinedProjects: joinedProjects, createdProjects: createdProjects }, { merge: true })
+                await setDoc(doc(usersCollectionRef, auth.currentUser.email),
+                    { id: auth.currentUser.email, displayName: username, joinedProjects: joinedProjects, createdProjects: createdProjects }, { merge: true })
+                //this await statement is what lets me add doccuments to the Users collection and also get to choose what the ID of the doc is 
+
 
                 navigate('/app')
                 //navigate to another screen here

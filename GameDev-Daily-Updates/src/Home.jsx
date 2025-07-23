@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, color } from 'framer-motion'
 import { Plus, X } from 'lucide-react'
 import Sidebar from './Sidebar';
+import { db } from './config/firebase'
+import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { auth } from '../src/config/firebase'
+
 
 // Mock Sidebar component
 
@@ -9,7 +13,98 @@ function Home() {
     const [screenWrapper, setScreenWrapper] = useState("5%");
     const [showCreateProject, setShowCreateProject] = useState(false);
     const [showAddProject, setShowAddProject] = useState(false);
+    const [projectKey, setProjectKey] = useState("")
+    const [amountOfDevelopers, setAmountOfDevelopers] = useState('');
+    const [typeOfProject, setTypeOfProject] = useState('');
+    const [addingProjectName, setAddingProjectName] = useState('');
+    const [currentDate, setCurrentDate] = useState("");
 
+
+
+
+    const usersDocRef = doc(db, "users", auth.currentUser.email) //ref to email
+    const projectsCollectionRef = collection(db, "projects")
+
+
+    async function createProject() {
+        setShowCreateProject(false)
+
+        //update current users CreatedProjects array 
+        await updateDoc(usersDocRef, { createdProjects: arrayUnion("Project custom key goes here") })
+
+
+        //create project document and update items
+        await setDoc(doc(projectsCollectionRef, projectKey),
+            {
+                id: projectKey,
+                NumberOfDevelopers: "Number of developers state goes here",
+                ProjectCreatorEmail: auth.currentUser.email,
+                ProjectName: "Project name state goes here",
+                isReal: true,
+                TypeOfProject: typeOfProject,
+
+                UsersUpdates: arrayUnion("This one needs to be determined by number of developers"),
+
+
+                VFXToDoDates: arrayUnion("Date when to do list item was posted"),
+                VFXCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListVFX: arrayUnion("Array of text for each to do list item"),
+
+                ScriptingToDoDates: arrayUnion("Date when to do list item was posted"),
+                ScriptingCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListScripting: arrayUnion("Array of text for each to do list item"),
+
+
+                AnimatingToDoDates: arrayUnion("Date when to do list item was posted"),
+                AnimatingCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListAnimating: arrayUnion("Array of text for each to do list item"),
+
+
+                SoundDesignToDoDates: arrayUnion("Date when to do list item was posted"),
+                SoundDesignCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListSoundDesign: arrayUnion("Array of text for each to do list item"),
+
+
+                BuildingToDoDates: arrayUnion("Date when to do list item was posted"),
+                BuildingCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListBuilding: arrayUnion("Array of text for each to do list item"),
+
+
+
+                ModelingToDoDates: arrayUnion("Date when to do list item was posted"),
+                ModelingCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListModeling: arrayUnion("Array of text for each to do list item"),
+
+
+                TestingToDoDates: arrayUnion("Date when to do list item was posted"),
+                TestingCompletedDates: arrayUnion("Date when item was completed"),
+                ToDoListTesting: arrayUnion("Array of text for each to do list item"),
+
+
+            })
+
+
+    }
+
+
+    async function joinProject() {
+        //finish this
+        if (projectKey == "" || addingProjectName == "") {
+            console.log("ERROR: PROJECT KEY OR PROJECT NAME IS INVALID TRY AGAIN")
+        }
+        else {
+            setShowAddProject(false)
+
+            //update current users joinedProjects array 
+            await updateDoc(usersDocRef, { joinedProject: arrayUnion("Project custom key goes here") })
+
+
+            //join project document was already created in project collection so dont worry about creating another
+
+        }
+
+
+    }
 
     const projects = [
         {
@@ -320,6 +415,13 @@ function Home() {
         marginTop: '30px'
     };
 
+    const optionStyles = {
+        color: "black",
+        background: "3px rgba(75,75,75,0.8)",
+    }
+
+
+
     const [hoveredProject, setHoveredProject] = useState(null);
     const [hoveredCreateBox, setHoveredCreateBox] = useState(false);
     const [hoveredCloseButton, setHoveredCloseButton] = useState(false);
@@ -586,6 +688,8 @@ function Home() {
                                 <input
                                     placeholder='Unique Project Key'
                                     style={inputStyles}
+                                    value={projectKey}
+                                    onChange={(e) => setProjectKey(e.target.value)}
                                     onFocus={(e) => {
                                         e.target.style.borderColor = 'rgba(255, 255, 255, 0.5)';
                                         e.target.style.boxShadow = '0 0 0 2px rgba(255, 255, 255, 0.2)';
@@ -595,24 +699,23 @@ function Home() {
                                         e.target.style.boxShadow = 'none';
                                     }}
                                 />
-
-                                <select style={selectStyles}>
+                                <select onChange={(e) => setTypeOfProject(e)} style={selectStyles}>
                                     <option value="" disabled selected>Select Project Type</option>
-                                    <option value="web">Web Application</option>
-                                    <option value="mobile">Mobile App</option>
-                                    <option value="desktop">Desktop Software</option>
-                                    <option value="api">API Service</option>
-                                    <option value="other">Other</option>
+                                    <option style={optionStyles} value="web">Web Application</option>
+                                    <option style={optionStyles} value="mobile">Mobile App</option>
+                                    <option style={optionStyles} value="desktop">Desktop Software</option>
+                                    <option style={optionStyles} value="api">API Service</option>
+                                    <option style={optionStyles} value="other">Other</option>
                                 </select>
 
 
-                                <select style={selectStyles}>
+                                <select onChange={(e) => setAmountOfDevelopers(e)} style={selectStyles}>
                                     <option value="" disabled selected>Select Number of Develoeprs</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
+                                    <option style={optionStyles} value="2">2</option>
+                                    <option style={optionStyles} value="3">3</option>
+                                    <option style={optionStyles} value="4">4</option>
+                                    <option style={optionStyles} value="5">5</option>
+                                    <option style={optionStyles} value="6">6</option>
                                 </select>
                             </div>
 
@@ -627,7 +730,7 @@ function Home() {
                                         e.target.style.transform = 'translateY(0)';
                                         e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
                                     }}
-                                    onClick={() => setShowCreateProject(false)}
+                                    onClick={() => createProject()}
                                 >
                                     Create Project
                                 </button>
@@ -711,6 +814,8 @@ function Home() {
                                 <input
                                     placeholder='Project Key'
                                     style={inputStyles}
+                                    value={projectKey}
+                                    onChange={(e) => setProjectKey(e.target.value)}
                                     onFocus={(e) => {
                                         e.target.style.borderColor = 'rgba(255, 255, 255, 0.5)';
                                         e.target.style.boxShadow = '0 0 0 2px rgba(255, 255, 255, 0.2)';
@@ -733,7 +838,7 @@ function Home() {
                                         e.target.style.transform = 'translateY(0)';
                                         e.target.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
                                     }}
-                                    onClick={() => setShowAddProject(false)}
+                                    onClick={() => joinProject()}
                                 >
                                     Join Project
                                 </button>
