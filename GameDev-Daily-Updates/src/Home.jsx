@@ -3,7 +3,8 @@ import { motion, AnimatePresence, color } from 'framer-motion'
 import { Plus, X } from 'lucide-react'
 import Sidebar from './Sidebar';
 import { db } from './config/firebase'
-import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom';
+import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
 import { auth } from '../src/config/firebase'
 
 
@@ -14,93 +15,137 @@ function Home() {
     const [showCreateProject, setShowCreateProject] = useState(false);
     const [showAddProject, setShowAddProject] = useState(false);
     const [projectKey, setProjectKey] = useState("")
-    const [amountOfDevelopers, setAmountOfDevelopers] = useState('');
+    const [amountOfDevelopers, setAmountOfDevelopers] = useState(0);
     const [typeOfProject, setTypeOfProject] = useState('');
     const [addingProjectName, setAddingProjectName] = useState('');
-    const [currentDate, setCurrentDate] = useState("");
+    //dont need date hook because Im using new Date provided by react.
 
+    navigation = useNavigate();
 
+    const date = new Date().toLocaleDateString();
 
 
     const usersDocRef = doc(db, "users", auth.currentUser.email) //ref to email
     const projectsCollectionRef = collection(db, "projects")
 
 
-    async function createProject() {
+    function createProjectCancelButtonPressed() {
         setShowCreateProject(false)
+        setAddingProjectName("")
+        setProjectKey("")
+    }
 
-        //update current users CreatedProjects array 
-        await updateDoc(usersDocRef, { createdProjects: arrayUnion("Project custom key goes here") })
-
-
-        //create project document and update items
-        await setDoc(doc(projectsCollectionRef, projectKey),
-            {
-                id: projectKey,
-                NumberOfDevelopers: "Number of developers state goes here",
-                ProjectCreatorEmail: auth.currentUser.email,
-                ProjectName: "Project name state goes here",
-                isReal: true,
-                TypeOfProject: typeOfProject,
-
-                UsersUpdates: arrayUnion("This one needs to be determined by number of developers"),
-
-
-                VFXToDoDates: arrayUnion("Date when to do list item was posted"),
-                VFXCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListVFX: arrayUnion("Array of text for each to do list item"),
-
-                ScriptingToDoDates: arrayUnion("Date when to do list item was posted"),
-                ScriptingCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListScripting: arrayUnion("Array of text for each to do list item"),
-
-
-                AnimatingToDoDates: arrayUnion("Date when to do list item was posted"),
-                AnimatingCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListAnimating: arrayUnion("Array of text for each to do list item"),
-
-
-                SoundDesignToDoDates: arrayUnion("Date when to do list item was posted"),
-                SoundDesignCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListSoundDesign: arrayUnion("Array of text for each to do list item"),
-
-
-                BuildingToDoDates: arrayUnion("Date when to do list item was posted"),
-                BuildingCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListBuilding: arrayUnion("Array of text for each to do list item"),
+    function joinProjectCancelButtonPressed() {
+        setShowAddProject(false)
+        setAddingProjectName("")
+        setProjectKey("")
+    }
 
 
 
-                ModelingToDoDates: arrayUnion("Date when to do list item was posted"),
-                ModelingCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListModeling: arrayUnion("Array of text for each to do list item"),
+    async function createProject() {
+
+        try {
+
+            setShowCreateProject(false)
 
 
-                TestingToDoDates: arrayUnion("Date when to do list item was posted"),
-                TestingCompletedDates: arrayUnion("Date when item was completed"),
-                ToDoListTesting: arrayUnion("Array of text for each to do list item"),
+            //update current users CreatedProjects array 
+            await updateDoc(usersDocRef, { createdProjects: arrayUnion(projectKey) })
+            //ERROR occuring here
+
+            //create project document and update items
+            await setDoc(doc(projectsCollectionRef, projectKey),
+                {
+                    id: projectKey,
+                    NumberOfDevelopers: amountOfDevelopers,
+                    ProjectCreatorEmail: auth.currentUser.email,
+                    ProjectName: addingProjectName,
+                    isReal: true,
+                    TypeOfProject: typeOfProject,
+
+                    ProjectCreationDate: date,
+
+                    ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
 
 
-            })
+                    //BIG DEAL FIX THIS
+                    UsersUpdates: arrayUnion("This one needs to be determined by number of developers"),
 
+
+                    VFXToDoDates: arrayUnion("Date when to do list item was posted"),
+                    VFXCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListVFX: arrayUnion("Array of text for each to do list item"),
+
+                    ScriptingToDoDates: arrayUnion("Date when to do list item was posted"),
+                    ScriptingCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListScripting: arrayUnion("Array of text for each to do list item"),
+
+
+                    AnimatingToDoDates: arrayUnion("Date when to do list item was posted"),
+                    AnimatingCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListAnimating: arrayUnion("Array of text for each to do list item"),
+
+
+                    SoundDesignToDoDates: arrayUnion("Date when to do list item was posted"),
+                    SoundDesignCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListSoundDesign: arrayUnion("Array of text for each to do list item"),
+
+
+                    BuildingToDoDates: arrayUnion("Date when to do list item was posted"),
+                    BuildingCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListBuilding: arrayUnion("Array of text for each to do list item"),
+
+
+
+                    ModelingToDoDates: arrayUnion("Date when to do list item was posted"),
+                    ModelingCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListModeling: arrayUnion("Array of text for each to do list item"),
+
+
+                    TestingToDoDates: arrayUnion("Date when to do list item was posted"),
+                    TestingCompletedDates: arrayUnion("Date when item was completed"),
+                    ToDoListTesting: arrayUnion("Array of text for each to do list item"),
+
+                    //navigation to app when user creates project
+
+
+
+                })
+
+        } catch (error) {
+            alert(error)
+        }
 
     }
 
 
     async function joinProject() {
-        //finish this
-        if (projectKey == "" || addingProjectName == "") {
-            console.log("ERROR: PROJECT KEY OR PROJECT NAME IS INVALID TRY AGAIN")
-        }
-        else {
-            setShowAddProject(false)
+        //check and see if projectKey and ProjectName are valid and exist
+        const projectsDocRef = doc(db, "projects", projectKey)
+        const docSnap = await getDoc(projectsDocRef)
+        try {
+            if (docSnap.id != projectKey) {
+                alert("ERROR: PROJECT KEY OR PROJECT NAME IS INVALID TRY AGAIN")
+            }
+            else {
+                setShowAddProject(false)
 
-            //update current users joinedProjects array 
-            await updateDoc(usersDocRef, { joinedProject: arrayUnion("Project custom key goes here") })
+                //update current users joinedProjects array 
+                await updateDoc(usersDocRef, { joinedProjects: arrayUnion("Project custom key goes here") })
 
 
-            //join project document was already created in project collection so dont worry about creating another
 
+
+                //join project document was already created in project collection so dont worry about creating another
+
+
+
+                //navigation to app when user joins project
+            }
+
+        } catch (error) {
+            alert(error)
         }
 
 
@@ -433,7 +478,7 @@ function Home() {
             fontFamily: 'Arial, sans-serif'
         }}>
             <motion.div onHoverStart={() => setScreenWrapper("20%")} onHoverEnd={() => setScreenWrapper("5%")}>
-
+                {/* My sidebar component wrapped in a div so I can manipulate the screens width*/}
                 <Sidebar />
 
             </motion.div>
@@ -631,15 +676,13 @@ function Home() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                         style={modalOverlayStyles}
-                        onClick={() => setShowCreateProject(false)}
+                        onClick={() => setShowCreateProject(true)}
                     >
                         <motion.div
                             initial={{ scale: 0.7, opacity: 0, y: 50 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.7, opacity: 0, y: 50 }}
                             transition={{
-                                type: "spring",
-                                stiffness: 300,
                                 damping: 30
                             }}
                             style={modalContentStyles}
@@ -668,6 +711,8 @@ function Home() {
                             <div style={formContainerStyles}>
                                 <input
                                     placeholder='Project Name'
+                                    onChange={(e) => setAddingProjectName(e.target.value)}
+                                    type='string'
                                     style={{
                                         ...inputStyles,
                                         ':focus': {
@@ -689,6 +734,7 @@ function Home() {
                                     placeholder='Unique Project Key'
                                     style={inputStyles}
                                     value={projectKey}
+                                    type='string'
                                     onChange={(e) => setProjectKey(e.target.value)}
                                     onFocus={(e) => {
                                         e.target.style.borderColor = 'rgba(255, 255, 255, 0.5)';
@@ -699,7 +745,7 @@ function Home() {
                                         e.target.style.boxShadow = 'none';
                                     }}
                                 />
-                                <select onChange={(e) => setTypeOfProject(e)} style={selectStyles}>
+                                <select type="string" onChange={(e) => setTypeOfProject(e.target.value)} style={selectStyles}>
                                     <option value="" disabled selected>Select Project Type</option>
                                     <option style={optionStyles} value="web">Web Application</option>
                                     <option style={optionStyles} value="mobile">Mobile App</option>
@@ -709,13 +755,13 @@ function Home() {
                                 </select>
 
 
-                                <select onChange={(e) => setAmountOfDevelopers(e)} style={selectStyles}>
+                                <select type="number" onChange={(e) => setAmountOfDevelopers(e.target.value)} style={selectStyles}>
                                     <option value="" disabled selected>Select Number of Develoeprs</option>
-                                    <option style={optionStyles} value="2">2</option>
-                                    <option style={optionStyles} value="3">3</option>
-                                    <option style={optionStyles} value="4">4</option>
-                                    <option style={optionStyles} value="5">5</option>
-                                    <option style={optionStyles} value="6">6</option>
+                                    <option style={optionStyles} value={2}>2</option>
+                                    <option style={optionStyles} value={3}>3</option>
+                                    <option style={optionStyles} value={4}>4</option>
+                                    <option style={optionStyles} value={5}>5</option>
+                                    <option style={optionStyles} value={6}>6</option>
                                 </select>
                             </div>
 
@@ -744,8 +790,9 @@ function Home() {
                                         e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)';
                                         e.target.style.transform = 'translateY(0)';
                                     }}
-                                    onClick={() => setShowCreateProject(false)}
+                                    onClick={() => createProjectCancelButtonPressed()}
                                 >
+
                                     Cancel
                                 </button>
                             </div>
@@ -852,7 +899,7 @@ function Home() {
                                         e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)';
                                         e.target.style.transform = 'translateY(0)';
                                     }}
-                                    onClick={() => setShowAddProject(false)}
+                                    onClick={() => joinProjectCancelButtonPressed()}
                                 >
                                     Cancel
                                 </button>
