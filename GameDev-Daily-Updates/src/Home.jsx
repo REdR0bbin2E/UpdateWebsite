@@ -29,6 +29,7 @@ function Home() {
     const projectsCollectionRef = collection(db, "projects")
 
 
+
     function createProjectCancelButtonPressed() {
         setShowCreateProject(false)
         setAddingProjectName("")
@@ -68,44 +69,45 @@ function Home() {
 
                     ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
 
+                    ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
                     //BIG DEAL FIX THIS
-                    UsersUpdates: arrayUnion("This one needs to be determined by number of developers"),
+                    UsersUpdates: arrayUnion(""),
 
 
-                    VFXToDoDates: arrayUnion("Date when to do list item was posted"),
-                    VFXCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListVFX: arrayUnion("Array of text for each to do list item"),
+                    VFXToDoDates: arrayUnion(""),
+                    VFXCompletedDates: arrayUnion(""),
+                    ToDoListVFX: arrayUnion(""),
 
-                    ScriptingToDoDates: arrayUnion("Date when to do list item was posted"),
-                    ScriptingCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListScripting: arrayUnion("Array of text for each to do list item"),
-
-
-                    AnimatingToDoDates: arrayUnion("Date when to do list item was posted"),
-                    AnimatingCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListAnimating: arrayUnion("Array of text for each to do list item"),
+                    ScriptingToDoDates: arrayUnion(""),
+                    ScriptingCompletedDates: arrayUnion(""),
+                    ToDoListScripting: arrayUnion(""),
 
 
-                    SoundDesignToDoDates: arrayUnion("Date when to do list item was posted"),
-                    SoundDesignCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListSoundDesign: arrayUnion("Array of text for each to do list item"),
+                    AnimatingToDoDates: arrayUnion(""),
+                    AnimatingCompletedDates: arrayUnion(""),
+                    ToDoListAnimating: arrayUnion(""),
 
 
-                    BuildingToDoDates: arrayUnion("Date when to do list item was posted"),
-                    BuildingCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListBuilding: arrayUnion("Array of text for each to do list item"),
+                    SoundDesignToDoDates: arrayUnion(""),
+                    SoundDesignCompletedDates: arrayUnion(""),
+                    ToDoListSoundDesign: arrayUnion(""),
+
+
+                    BuildingToDoDates: arrayUnion(""),
+                    BuildingCompletedDates: arrayUnion(""),
+                    ToDoListBuilding: arrayUnion(""),
 
 
 
-                    ModelingToDoDates: arrayUnion("Date when to do list item was posted"),
-                    ModelingCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListModeling: arrayUnion("Array of text for each to do list item"),
+                    ModelingToDoDates: arrayUnion(""),
+                    ModelingCompletedDates: arrayUnion(""),
+                    ToDoListModeling: arrayUnion(""),
 
 
-                    TestingToDoDates: arrayUnion("Date when to do list item was posted"),
-                    TestingCompletedDates: arrayUnion("Date when item was completed"),
-                    ToDoListTesting: arrayUnion("Array of text for each to do list item"),
+                    TestingToDoDates: arrayUnion(""),
+                    TestingCompletedDates: arrayUnion(""),
+                    ToDoListTesting: arrayUnion(""),
 
                     //navigation to app when user creates project
 
@@ -132,16 +134,26 @@ function Home() {
                 setShowAddProject(false)
 
                 //update current users joinedProjects array 
-                await updateDoc(usersDocRef, { joinedProjects: arrayUnion("Project custom key goes here") })
+                await updateDoc(usersDocRef, { joinedProjects: arrayUnion(projectKey) })
 
 
+                await updateDoc(projectsDocRef, {
 
+                    userUpdates: arrayUnion(""),
+                    ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
+                    ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
+
+                })
 
                 //join project document was already created in project collection so dont worry about creating another
 
 
 
+
+
+
                 //navigation to app when user joins project
+
             }
 
         } catch (error) {
@@ -676,7 +688,7 @@ function Home() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                         style={modalOverlayStyles}
-                        onClick={() => setShowCreateProject(true)}
+                        onClick={() => setShowCreateProject(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.7, opacity: 0, y: 50 }}
