@@ -15,9 +15,12 @@ function Home() {
     const [showCreateProject, setShowCreateProject] = useState(false);
     const [showAddProject, setShowAddProject] = useState(false);
     const [projectKey, setProjectKey] = useState("")
-    const [amountOfDevelopers, setAmountOfDevelopers] = useState(0);
+    const [amountOfDevelopersLimit, setAmountOfDevelopersLimit] = useState(0);
     const [typeOfProject, setTypeOfProject] = useState('');
     const [addingProjectName, setAddingProjectName] = useState('');
+    const [arrayOfCurrentUsersProjects, setArrayOfCurrentUsersProjects] = useState([]);
+    const [projectsData, setProjectsData] = useState([])
+    const [loading, setLoading] = useState(true)
     //dont need date hook because Im using new Date provided by react.
 
     navigation = useNavigate();
@@ -44,6 +47,7 @@ function Home() {
 
 
 
+
     async function createProject() {
 
         try {
@@ -59,7 +63,7 @@ function Home() {
             await setDoc(doc(projectsCollectionRef, projectKey),
                 {
                     id: projectKey,
-                    NumberOfDevelopers: amountOfDevelopers,
+                    DeveloperLimitNumber: amountOfDevelopersLimit,
                     ProjectCreatorEmail: auth.currentUser.email,
                     ProjectName: addingProjectName,
                     isReal: true,
@@ -139,7 +143,7 @@ function Home() {
 
                 await updateDoc(projectsDocRef, {
 
-                    userUpdates: arrayUnion(""),
+                    UsersUpdates: arrayUnion(""),
                     ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
                     ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
@@ -205,6 +209,54 @@ function Home() {
 
 
     }, []);
+
+    //this useEffect updates the hook and gives it all of the current users projects
+    useEffect(() => {
+        const fetchAllProjects = async () => {
+            try {
+
+                const userDocSnap = await getDoc(usersDocRef);
+
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    const allProjectIds = [
+                        ...(userData.joinedProjects || []),
+                        ...(userData.createdProjects || [])
+
+                    ]
+
+                    const projectPromises = allProjectIds.map(projectId => {
+                        const projectDocRef = doc(db, 'projects', projectId)
+                        return getDoc(projectDocRef);
+                    });
+
+                    const projectDocSnaps = await Promise.all(projectPromises);
+
+
+                    const fetchedProjects = projectDocSnaps.map(snap => {
+                        if (snap.exists()) {
+                            return {
+                                id: snap.id, ...snap.data()
+                            }
+                            return null;
+                        }
+                    }).filter(Boolean);
+
+                    setProjectsData(fetchedProjects)
+
+                }
+
+            } catch (error) {
+                console.log(error)
+            } finally {
+                //set loading to false
+                setLoading(false)
+            }
+        }
+
+        fetchAllProjects();
+    }, []);
+
 
     const sidebarStyles = {
         position: 'fixed',
@@ -483,6 +535,11 @@ function Home() {
     const [hoveredCreateBox, setHoveredCreateBox] = useState(false);
     const [hoveredCloseButton, setHoveredCloseButton] = useState(false);
 
+
+    if (loading == true) {
+        return <div>loading...</div>
+    }
+
     return (
         <div style={{
             position: 'relative',
@@ -602,6 +659,7 @@ function Home() {
 
                         {hasProjects && (
                             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+
                                 <div style={{
                                     ...createProjectStyles,
                                     justifyContent: 'center',
@@ -613,6 +671,7 @@ function Home() {
                                 }}
                                     onClick={() => setShowCreateProject(true)}
                                 >
+
                                     <div>
                                         <Plus size={24} color="rgba(255, 255, 255, 0.7)" />
                                         <span style={{
@@ -758,22 +817,21 @@ function Home() {
                                     }}
                                 />
                                 <select type="string" onChange={(e) => setTypeOfProject(e.target.value)} style={selectStyles}>
-                                    <option value="" disabled selected>Select Project Type</option>
-                                    <option style={optionStyles} value="web">Web Application</option>
-                                    <option style={optionStyles} value="mobile">Mobile App</option>
-                                    <option style={optionStyles} value="desktop">Desktop Software</option>
-                                    <option style={optionStyles} value="api">API Service</option>
-                                    <option style={optionStyles} value="other">Other</option>
+                                    <option value="" disabled selected>Select Project Engine</option>
+                                    <option style={optionStyles} value="unity">Unity</option>
+                                    <option style={optionStyles} value="unreal">Unreal</option>
+                                    <option style={optionStyles} value="roblox">Roblox</option>
+                                    <option style={optionStyles} value="gameMaker">GameMaker</option>
+                                    <option style={optionStyles} value="goDot">GoDot</option>
                                 </select>
 
 
-                                <select type="number" onChange={(e) => setAmountOfDevelopers(e.target.value)} style={selectStyles}>
-                                    <option value="" disabled selected>Select Number of Develoeprs</option>
-                                    <option style={optionStyles} value={2}>2</option>
-                                    <option style={optionStyles} value={3}>3</option>
-                                    <option style={optionStyles} value={4}>4</option>
+                                <select type="number" onChange={(e) => setAmountOfDevelopersLimit(e.target.value)} style={selectStyles}>
+                                    <option value="" disabled selected>Select Limit of Developers</option>
                                     <option style={optionStyles} value={5}>5</option>
-                                    <option style={optionStyles} value={6}>6</option>
+                                    <option style={optionStyles} value={10}>10</option>
+                                    <option style={optionStyles} value={15}>15</option>
+
                                 </select>
                             </div>
 
