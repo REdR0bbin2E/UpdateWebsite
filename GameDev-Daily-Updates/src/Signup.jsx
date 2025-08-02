@@ -622,7 +622,7 @@ function Signup() {
                                     className='myinput'
                                     type={showKey ? "text" : "password"}
                                     onKeyDown={handleKeyDown}
-                                    placeholder='Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                                    placeholder='Redo Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
                                     style={{ ...styles.input, ...styles.passwordInput, ...(errors.confirmPassword ? styles.inputError : {}) }}
 
                                     onFocus={(e) => {

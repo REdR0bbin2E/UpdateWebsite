@@ -6,9 +6,9 @@ import { db } from './config/firebase'
 import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
 import { auth } from '../src/config/firebase'
+import { reload } from 'firebase/auth';
 
 
-// Mock Sidebar component
 
 function Home() {
     const [screenWrapper, setScreenWrapper] = useState("5%");
@@ -18,12 +18,12 @@ function Home() {
     const [amountOfDevelopersLimit, setAmountOfDevelopersLimit] = useState(0);
     const [typeOfProject, setTypeOfProject] = useState('');
     const [addingProjectName, setAddingProjectName] = useState('');
-    const [arrayOfCurrentUsersProjects, setArrayOfCurrentUsersProjects] = useState([]);
-    const [projectsData, setProjectsData] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [projectsData, setProjectsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [shouldRefresh, setShouldRefresh] = useState(false);
     //dont need date hook because Im using new Date provided by react.
 
-    navigation = useNavigate();
+    const navigation = useNavigate();
 
     const date = new Date().toLocaleDateString();
 
@@ -49,80 +49,93 @@ function Home() {
 
 
     async function createProject() {
-
         try {
+            console.log("🚀 Starting createProject...");
+            console.log("📝 Project data:", {
+                projectKey,
+                addingProjectName,
+                typeOfProject,
+                amountOfDevelopersLimit,
+                userEmail: auth.currentUser?.email
+            });
 
-            setShowCreateProject(false)
+            setShowCreateProject(false);
 
+            console.log("📤 Updating user document...");
+            await updateDoc(usersDocRef, {
+                createdProjects: arrayUnion(projectKey)
+            });
+            console.log("✅ User document updated");
 
-            //update current users CreatedProjects array 
-            await updateDoc(usersDocRef, { createdProjects: arrayUnion(projectKey) })
-            //ERROR occuring here
+            console.log("📤 Creating project document...");
+            await setDoc(doc(projectsCollectionRef, projectKey), {
+                id: projectKey,
+                DeveloperLimitNumber: amountOfDevelopersLimit,
+                ProjectCreatorEmail: auth.currentUser.email,
+                ProjectName: addingProjectName,
+                isReal: true,
+                TypeOfProject: typeOfProject,
 
-            //create project document and update items
-            await setDoc(doc(projectsCollectionRef, projectKey),
-                {
-                    id: projectKey,
-                    DeveloperLimitNumber: amountOfDevelopersLimit,
-                    ProjectCreatorEmail: auth.currentUser.email,
-                    ProjectName: addingProjectName,
-                    isReal: true,
-                    TypeOfProject: typeOfProject,
+                ProjectCreationDate: date,
 
-                    ProjectCreationDate: date,
+                ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
 
-                    ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
+                ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
-                    ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
-
-                    //BIG DEAL FIX THIS
-                    UsersUpdates: arrayUnion(""),
-
-
-                    VFXToDoDates: arrayUnion(""),
-                    VFXCompletedDates: arrayUnion(""),
-                    ToDoListVFX: arrayUnion(""),
-
-                    ScriptingToDoDates: arrayUnion(""),
-                    ScriptingCompletedDates: arrayUnion(""),
-                    ToDoListScripting: arrayUnion(""),
-
-
-                    AnimatingToDoDates: arrayUnion(""),
-                    AnimatingCompletedDates: arrayUnion(""),
-                    ToDoListAnimating: arrayUnion(""),
+                //BIG DEAL FIX THIS
+                UsersUpdates: arrayUnion(""),
 
 
-                    SoundDesignToDoDates: arrayUnion(""),
-                    SoundDesignCompletedDates: arrayUnion(""),
-                    ToDoListSoundDesign: arrayUnion(""),
+                VFXToDoDates: arrayUnion(""),
+                VFXCompletedDates: arrayUnion(""),
+                ToDoListVFX: arrayUnion(""),
+
+                ScriptingToDoDates: arrayUnion(""),
+                ScriptingCompletedDates: arrayUnion(""),
+                ToDoListScripting: arrayUnion(""),
 
 
-                    BuildingToDoDates: arrayUnion(""),
-                    BuildingCompletedDates: arrayUnion(""),
-                    ToDoListBuilding: arrayUnion(""),
+                AnimatingToDoDates: arrayUnion(""),
+                AnimatingCompletedDates: arrayUnion(""),
+                ToDoListAnimating: arrayUnion(""),
 
 
+                SoundDesignToDoDates: arrayUnion(""),
+                SoundDesignCompletedDates: arrayUnion(""),
+                ToDoListSoundDesign: arrayUnion(""),
 
-                    ModelingToDoDates: arrayUnion(""),
-                    ModelingCompletedDates: arrayUnion(""),
-                    ToDoListModeling: arrayUnion(""),
 
-
-                    TestingToDoDates: arrayUnion(""),
-                    TestingCompletedDates: arrayUnion(""),
-                    ToDoListTesting: arrayUnion(""),
-
-                    //navigation to app when user creates project
+                BuildingToDoDates: arrayUnion(""),
+                BuildingCompletedDates: arrayUnion(""),
+                ToDoListBuilding: arrayUnion(""),
 
 
 
-                })
+                ModelingToDoDates: arrayUnion(""),
+                ModelingCompletedDates: arrayUnion(""),
+                ToDoListModeling: arrayUnion(""),
+
+
+                TestingToDoDates: arrayUnion(""),
+                TestingCompletedDates: arrayUnion(""),
+                ToDoListTesting: arrayUnion(""),
+            });
+            console.log("✅ Project document created");
+
+            console.log("🔄 Triggering refresh...");
+            setShouldRefresh(prev => !prev);
+            //go refresh the fetchandsetprojects
+
+            // Clear form data that was already collected previously
+            setAddingProjectName("");
+            setProjectKey("");
+            setAmountOfDevelopersLimit(0);
+            setTypeOfProject("");
 
         } catch (error) {
-            alert(error)
+            console.error("💥 Error creating project:", error);
+            alert(`Error creating project: ${error.message}`);
         }
-
     }
 
 
@@ -131,7 +144,7 @@ function Home() {
         const projectsDocRef = doc(db, "projects", projectKey)
         const docSnap = await getDoc(projectsDocRef)
         try {
-            if (docSnap.id != projectKey) {
+            if (!docSnap.exists()) {
                 alert("ERROR: PROJECT KEY OR PROJECT NAME IS INVALID TRY AGAIN")
             }
             else {
@@ -143,7 +156,7 @@ function Home() {
 
                 await updateDoc(projectsDocRef, {
 
-                    UsersUpdates: arrayUnion(""),
+                    UsersUpdates: arrayUnion(" "),
                     ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
                     ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
@@ -152,14 +165,10 @@ function Home() {
                 //join project document was already created in project collection so dont worry about creating another
 
 
-
-
-
-
-                //navigation to app when user joins project
+                //navigation to app when user joins project TODO
 
             }
-
+            setShouldRefresh(prev => !prev);
         } catch (error) {
             alert(error)
         }
@@ -167,21 +176,86 @@ function Home() {
 
     }
 
-    const projects = [
-        {
-            id: 1,
-            icon: null,
-            projectName: "The Raq",
-            developers: ["Red", "Kirin", "Tripp", "Mag", "Rail", "Fuze"],
-            creationDate: "2024-12-15",
-            isReal: true,
-            projectKey: "000",
-            projectCreatorEmail: "mayo.akin3@gmail.com"
+
+    const fetchAndSetProjects = async () => {
+        try {
+            const userDocSnap = await getDoc(usersDocRef);
+            let fetchedProjects = []; // Declare outside the if block
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+                console.log("👤 User data:", userData); // Debug line
+
+                const allProjectIds = [
+                    ...(Array.isArray(userData.joinedProjects) ? userData.joinedProjects : []),
+                    ...(Array.isArray(userData.createdProjects) ? userData.createdProjects : [])
+                ];
+                console.log("🆔 All project IDs:", allProjectIds); // Debug line
+
+                if (allProjectIds.length > 0) {
+                    const projectPromises = allProjectIds.map(projectId => {
+                        const projectDocRef = doc(db, 'projects', projectId);
+                        return getDoc(projectDocRef);
+                    });
+
+                    const projectDocSnaps = await Promise.all(projectPromises);
+                    fetchedProjects = projectDocSnaps.map(snap => {
+                        if (snap.exists()) {
+                            return { id: snap.id, ...snap.data() };
+                        }
+                        return null;
+                    }).filter(Boolean);
+                }
+            } else {
+                console.log("❌ User document does not exist");
+                // Optionally initialize user document here
+                await setDoc(usersDocRef, {
+                    email: auth.currentUser.email,
+                    displayName: auth.currentUser.displayName,
+                    joinedProjects: [],
+                    createdProjects: []
+                });
+                console.log("✅ User document initialized");
+            }
+
+            console.log("🎯 Fetched projects:", fetchedProjects);
+            setProjectsData(fetchedProjects);
+
+        } catch (error) {
+            console.error("💥 Error fetching projects:", error);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
 
-    const hasProjects = projects.some(p => p.isReal);
+    // function to initialize user document if it doesn't exist
+    const initializeUserDoc = async () => {
+        try {
+            const userDocSnap = await getDoc(usersDocRef);
+            if (!userDocSnap.exists()) {
+                await setDoc(usersDocRef, {
+                    email: auth.currentUser.email,
+                    displayName: auth.currentUser.displayName,
+                    joinedProjects: [],
+                    createdProjects: []
+                });
+                console.log("✅ User document initialized");
+            }
+        } catch (error) {
+            console.error("Error initializing user document:", error);
+        }
+    };
 
+
+    //calls fetchAndSetProjects/refreshes when shouldRefresh is changed
+    useEffect(() => {
+        initializeUserDoc().then(() => {
+            fetchAndSetProjects();
+        });
+    }, [shouldRefresh]);
+
+
+    //gives me the current date
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
@@ -205,57 +279,9 @@ function Home() {
             document.body.style.fontFamily = '';
         };
 
-
-
-
     }, []);
 
-    //this useEffect updates the hook and gives it all of the current users projects
-    useEffect(() => {
-        const fetchAllProjects = async () => {
-            try {
 
-                const userDocSnap = await getDoc(usersDocRef);
-
-                if (userDocSnap.exists()) {
-                    const userData = userDocSnap.data();
-                    const allProjectIds = [
-                        ...(userData.joinedProjects || []),
-                        ...(userData.createdProjects || [])
-
-                    ]
-
-                    const projectPromises = allProjectIds.map(projectId => {
-                        const projectDocRef = doc(db, 'projects', projectId)
-                        return getDoc(projectDocRef);
-                    });
-
-                    const projectDocSnaps = await Promise.all(projectPromises);
-
-
-                    const fetchedProjects = projectDocSnaps.map(snap => {
-                        if (snap.exists()) {
-                            return {
-                                id: snap.id, ...snap.data()
-                            }
-                            return null;
-                        }
-                    }).filter(Boolean);
-
-                    setProjectsData(fetchedProjects)
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            } finally {
-                //set loading to false
-                setLoading(false)
-            }
-        }
-
-        fetchAllProjects();
-    }, []);
 
 
     const sidebarStyles = {
@@ -335,8 +361,9 @@ function Home() {
     const createProjectStyles = {
         display: 'flex',
         alignItems: 'center',
+        justifyContent: "space-between",
         gap: '20px',
-        marginBottom: '20px',
+        marginBottom: '1px',
         width: "45%"
     };
 
@@ -355,6 +382,27 @@ function Home() {
     };
 
     const createProjectBoxHoverStyles = {
+        ...createProjectBoxStyles,
+        background: 'rgba(255, 255, 255, 0.2)',
+        borderColor: 'rgba(255, 255, 255, 0.6)',
+        transform: 'scale(1.05)'
+    };
+
+    const addProjectBoxStyles = {
+        width: '80px',
+        height: '80px',
+        background: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '15px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: '2px dashed rgba(255, 255, 255, 0.4)',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        color: 'white'
+    };
+
+    const addProjectBoxHoverStyles = {
         ...createProjectBoxStyles,
         background: 'rgba(255, 255, 255, 0.2)',
         borderColor: 'rgba(255, 255, 255, 0.6)',
@@ -533,12 +581,18 @@ function Home() {
 
     const [hoveredProject, setHoveredProject] = useState(null);
     const [hoveredCreateBox, setHoveredCreateBox] = useState(false);
+    const [hoveredAddBox, setHoveredAddBox] = useState(false);
+
     const [hoveredCloseButton, setHoveredCloseButton] = useState(false);
 
 
     if (loading == true) {
         return <div>loading...</div>
     }
+
+    console.log("projectsData:", projectsData);
+    console.log("projectsData.length:", projectsData.length);
+    console.log("loading:", loading);
 
     return (
         <div style={{
@@ -568,21 +622,7 @@ function Home() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                    {!hasProjects && (
-                        <div style={createProjectStyles}>
-                            <div
-                                style={hoveredCreateBox ? createProjectBoxHoverStyles : createProjectBoxStyles}
-                                onMouseEnter={() => setHoveredCreateBox(true)}
-                                onMouseLeave={() => setHoveredCreateBox(false)}
-                                onClick={() => setShowCreateProject(true)}
-                            >
-                                <Plus size={32} />
-                            </div>
-                            <span style={createProjectTextStyles}>
-                                Create or Join Project
-                            </span>
-                        </div>
-                    )}
+
                     <motion.h1
                         style={productivityStyles}
                         initial={{ opacity: 0, y: 50 }}
@@ -590,10 +630,11 @@ function Home() {
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         ALL PROJECTS
+
                     </motion.h1>
                     <div style={projectsBoxStyles}>
-                        {hasProjects ? (
-                            projects.filter(p => p.isReal).map((project, index) => (
+                        {projectsData.length > 0 ? (
+                            projectsData.map((project, index) => (
                                 <motion.div
                                     key={project.id}
                                     style={hoveredProject === project.id ? projectItemHoverStyles : projectItemStyles}
@@ -601,7 +642,7 @@ function Home() {
                                     onMouseLeave={() => setHoveredProject(null)}
                                     initial={{ opacity: 0, x: -50 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    transition={{ duration: 0.5, delay: 0.1 }}
                                 >
                                     <div style={{
                                         display: 'flex',
@@ -609,7 +650,7 @@ function Home() {
                                         gap: '15px',
                                         marginBottom: '15px'
                                     }}>
-                                        {project.icon && (
+                                        {/*project.icon && (
                                             <div style={{
                                                 width: '50px',
                                                 height: '50px',
@@ -621,18 +662,18 @@ function Home() {
                                             }}>
                                                 {project.icon}
                                             </div>
-                                        )}
+                                        )*/}
                                         <h3 style={{
                                             margin: 0,
                                             fontSize: '1.5rem',
                                             fontWeight: 'bold'
                                         }}>
-                                            {project.projectName}
+                                            {project.ProjectName}
                                         </h3>
                                     </div>
 
                                     <div style={developersStyles}>
-                                        {project.developers.filter(dev => dev !== "").map((developer, devIndex) => (
+                                        {project.ListOfDevelopersDisplayName.map((developer, devIndex) => (
                                             <span key={devIndex} style={developerTagStyles}>
                                                 {developer}
                                             </span>
@@ -640,7 +681,7 @@ function Home() {
                                     </div>
 
                                     <div style={creationDateStyles}>
-                                        Created: {formatDate(project.creationDate)}
+                                        Created: {formatDate(project.ProjectCreationDate)}
                                     </div>
                                 </motion.div>
                             ))
@@ -648,16 +689,54 @@ function Home() {
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center',
+                                justifyContent: 'space-around',
+                                flexDirection: "column",
+
                                 height: '200px',
                                 color: 'rgba(255, 255, 255, 0.6)',
                                 fontSize: '1.2rem'
                             }}>
-                                No projects yet. Create your first project to get started!
+
+                                Create or join your first project to get started!
+
+
+                                <div style={{ marginTop: "5%", display: 'flex', justifyContent: "space-between", width: "50%" }}>
+                                    <div style={createProjectStyles}>
+                                        <div
+                                            style={hoveredCreateBox ? createProjectBoxHoverStyles : createProjectBoxStyles}
+                                            onMouseEnter={() => setHoveredCreateBox(true)}
+                                            onMouseLeave={() => setHoveredCreateBox(false)}
+                                            onClick={() => setShowCreateProject(true)}
+                                        >
+                                            <Plus size={32} />
+                                        </div>
+                                        <span style={createProjectTextStyles}>
+                                            Create Project
+                                        </span>
+                                    </div>
+
+
+                                    <div style={createProjectStyles}>
+                                        <div
+                                            style={hoveredAddBox ? addProjectBoxHoverStyles : addProjectBoxStyles}
+                                            onMouseEnter={() => setHoveredAddBox(true)}
+                                            onMouseLeave={() => setHoveredAddBox(false)}
+                                            onClick={() => setShowAddProject(true)}
+                                        >
+                                            <Plus size={32} />
+                                        </div>
+                                        <span style={createProjectTextStyles}>
+                                            Join Project
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
                             </div>
                         )}
 
-                        {hasProjects && (
+                        {projectsData.length > 0 && (
                             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 
                                 <div style={{
