@@ -1,12 +1,18 @@
 import { Home, Users, Settings, Menu, Bell, Search, User, FileText, BarChart3, Calendar, X, ChevronLeft, ChevronDown, Gamepad } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, scale, degrees } from 'framer-motion'
 import { logout } from './auth' //needs curly brackets because 
 import { auth } from '../src/config/firebase'
 import { FirebaseError } from 'firebase/app'
+import { db } from '../src/config/firebase';
+
 
 export default function Sidebar() {
+
+    const usersDocRef = doc(db, "users", auth.currentUser.email) //ref to email
+    const projectsCollectionRef = collection(db, "projects")
 
     const handleSignOut = async () => {
         try {
@@ -28,6 +34,11 @@ export default function Sidebar() {
     const [showCreateProject, setShowCreateProject] = useState(false)
     const [showSettingsModal, setShowSettingsModal] = useState(false)
     const [showProfileModal, setShowProfileModal] = useState(false)
+    const [projectsData, setProjectsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [listOfProjects, setListOfProjects] = useState([]);
+
+
     const navigation = useNavigate();
 
 
@@ -73,6 +84,62 @@ export default function Sidebar() {
 
 
     }
+
+    //dont worry about the other function because once the user adds or creates a new project
+    //then navigate the user elsewhere
+
+    const fetchListOfCurrentUserProjects = async () => {
+        try {
+            const userDocSnap = await getDoc(usersDocRef);
+            let fetchedProjects = []
+
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data();
+
+                const allProjectIds = [
+                    ...(Array.isArray(userData.joinedProjects) ? userData.joinedProjects : []),
+                    ...(Array.isArray(userData.createdProjects) ? userData.createdProjects : [])
+                ];
+
+                if (allProjectIds.length > 0) {
+                    const projectPromises = allProjectIds.map(projectId => {
+                        const projectDocRef = doc(db, 'projects', projectId);
+                        return getDoc(projectDocRef);
+                    })
+
+                    const projectDocSnaps = await Promise.all(projectPromises);
+                    fetchedProjects = projectDocSnaps.map(snap => {
+                        if (snap.exists()) {
+                            return { id: snap.id, ...snap.data() };
+                        }
+                        return null;
+                    }).filter(Boolean)
+                }
+                else {
+                    alert("User has no projects")
+                }
+
+                setProjectsData(fetchedProjects);
+
+            }
+
+        }
+        catch (error) {
+            alert(error + "lol")
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
+
+    useEffect(() => {
+
+        fetchListOfCurrentUserProjects();
+
+    }, []);
+
+
 
 
     function settingsModal() {
@@ -273,9 +340,9 @@ export default function Sidebar() {
                                             transition={{ duration: 0.2 }}
                                             className="ml-4 mt-2 space-y-1"
                                         >
-                                            {projects.map((project) => (
+                                            {projectsData.map((project) => (
                                                 <motion.button
-                                                    key={project.name}
+                                                    key={project.id}
                                                     onClick={() => selectedProject(project.name)}
                                                     className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
                                                     whileHover={{ scale: 1.02 }}
@@ -283,7 +350,7 @@ export default function Sidebar() {
                                                 >
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                                        {project.name}
+                                                        {project.ProjectName}
                                                     </div>
                                                 </motion.button>
                                             ))}

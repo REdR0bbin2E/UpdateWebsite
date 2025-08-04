@@ -1097,9 +1097,9 @@ function App() {
                 <li style={{ textTransform: "uppercase" }}>{developers[index].roles[1]}</li>
               </ul>
 
-              <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
+              { /*             <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
 
-
+           */ }
 
 
             </motion.button>

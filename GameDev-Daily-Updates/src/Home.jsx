@@ -6,7 +6,6 @@ import { db } from './config/firebase'
 import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
 import { auth } from '../src/config/firebase'
-import { reload } from 'firebase/auth';
 
 
 
@@ -82,8 +81,11 @@ function Home() {
 
                 ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
-                //BIG DEAL FIX THIS
-                UsersUpdates: arrayUnion(""),
+                //BIG DEAL FIX THIS (how it works is I need everytime a user joins or creates
+                //  a project to add another index to userUpdates and when a user adds an update it corresponds to
+                //  the index of their email in list of developer emails. Ill add the update in this format 
+                // "changed...," all to the same index in the array)
+                UsersUpdates: arrayUnion(","),
 
 
                 VFXToDoDates: arrayUnion(""),
@@ -156,7 +158,7 @@ function Home() {
 
                 await updateDoc(projectsDocRef, {
 
-                    UsersUpdates: arrayUnion(" "),
+                    UsersUpdates: arrayUnion(","),
                     ListOfDevelopersEmails: arrayUnion(auth.currentUser.email),
                     ListOfDevelopersDisplayName: arrayUnion(auth.currentUser.displayName),
 
@@ -242,7 +244,7 @@ function Home() {
                 console.log("✅ User document initialized");
             }
         } catch (error) {
-            console.error("Error initializing user document:", error);
+            alert("Error initializing user document:", error);
         }
     };
 
@@ -331,7 +333,7 @@ function Home() {
         backdropFilter: 'blur(15px)',
         borderRadius: '20px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        width: 'calc(200%)',
+        width: '200%',
         minHeight: '300px',
         padding: '30px',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
