@@ -203,22 +203,9 @@ export default function Sidebar() {
     }
 
 
-    function selectedProject(props) {
-        if (props == "The Raq") {
-            navigation('/app')
-        }
-        else if (props == "Project 2") {
-
-        }
-        else if (props == "Project 3") {
-
-        }
-        else if (props == "Project 4") {
-
-        }
-        else if (props == "Project 5") {
-
-        }
+    function selectedProject(props, projName) {
+        const dataToPass = { projectKey: props }
+        navigation(`/app/${projName}`, { state: dataToPass })
     }
 
     function endedHover() {
@@ -343,7 +330,7 @@ export default function Sidebar() {
                                             {projectsData.map((project) => (
                                                 <motion.button
                                                     key={project.id}
-                                                    onClick={() => selectedProject(project.name)}
+                                                    onClick={() => selectedProject(project.id, project.ProjectName.replace(/\s+/g, "-"))}
                                                     className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}

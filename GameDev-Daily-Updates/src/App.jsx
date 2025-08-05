@@ -5,6 +5,7 @@ import './App.css'
 import VerticalScroller from './VerticalScroller'
 import Sidebar from './Sidebar'
 import { animate, AnimatePresence, motion, scale } from 'framer-motion'
+import { useNavigate, useLocation } from 'react-router-dom'
 import FuuzynImage from '../src/assets/Roblox-avatars/FuuzynT.webp'
 import RedRobbin23Image from '../src/assets/Roblox-avatars/RedRobbin23T.webp'
 import MagpineImage from '../src/assets/Roblox-avatars/MagpineT.webp'
@@ -19,6 +20,7 @@ import { bottom } from '@popperjs/core'
 const date = new Date().toLocaleDateString();
 
 
+//getting data passed from user when the user attempts to navigate to the home page
 
 {/*Putting current user here so that I can make it a promp in <MyModal> */ }
 {/*Modal for checking the users updates */ }
@@ -42,7 +44,6 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => {
     if (isOpen && modalRef.current) {
       // Focus the modal when it opens
       modalRef.current.focus();
-
       // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
 
@@ -61,6 +62,7 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => {
 
   return (
     <AnimatePresence>
+
       {isOpen && (
         <motion.div
           className='modal-backdrop'
@@ -964,6 +966,9 @@ const developers = [
 ];
 
 function App() {
+  const currentLocation = useLocation();
+  const recievedData = currentLocation.state;
+  //recievedData.projectName to use data
   const [count, setCount] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
@@ -1020,6 +1025,7 @@ function App() {
 
         <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</motion.h1>
         <motion.p initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </motion.p>
+
 
 
         <div>
@@ -1097,9 +1103,9 @@ function App() {
                 <li style={{ textTransform: "uppercase" }}>{developers[index].roles[1]}</li>
               </ul>
 
-              { /*             <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
+              <img style={{ borderRadius: 50, width: 125, height: 125 }} src={developers[index].profilePicture} />
 
-           */ }
+
 
 
             </motion.button>

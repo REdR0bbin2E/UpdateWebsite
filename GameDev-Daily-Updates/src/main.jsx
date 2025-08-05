@@ -68,7 +68,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/app' element={
+        <Route path='/app/:projectName' element={
           <PrivateRoute>
             <App />
           </PrivateRoute>
