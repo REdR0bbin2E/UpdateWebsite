@@ -203,8 +203,8 @@ export default function Sidebar() {
     }
 
 
-    function selectedProject(props, projName) {
-        const dataToPass = { projectKey: props }
+    function selectedProject(pKey, projName) {
+        const dataToPass = { projectKey: pKey, projectName: projName }
         navigation(`/app/${projName}`, { state: dataToPass })
     }
 

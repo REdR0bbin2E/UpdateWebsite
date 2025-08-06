@@ -86,7 +86,8 @@ function Home() {
                 //  the index of their email in list of developer emails. Ill add the update in this format 
                 // "changed...," all to the same index in the array)
                 UsersUpdates: arrayUnion(","),
-
+                //create a userUpdates array that will work like usersUpdates but just have dates of update submissions
+                UsersUpdatesDates: arrayUnion(","),
 
                 VFXToDoDates: arrayUnion(""),
                 VFXCompletedDates: arrayUnion(""),

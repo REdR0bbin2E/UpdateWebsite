@@ -12,9 +12,10 @@ import MagpineImage from '../src/assets/Roblox-avatars/MagpineT.webp'
 import WhyKirinImage from '../src/assets/Roblox-avatars/WhyKirinT.webp'
 import RaillizeImage from '../src/assets/Roblox-avatars/RaillizeT.webp'
 import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
-import KingSaysImage from '../src/assets/images/KingSays.png'
-import RogueLineageImage from '../src/assets/Images/RogueLineage.png'
-import { bottom } from '@popperjs/core'
+import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
+import { auth } from '../src/config/firebase'
+import { db } from '../src/config/firebase';
+
 
 
 const date = new Date().toLocaleDateString();
@@ -922,7 +923,7 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
 
 
-const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing"]
+const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing", "Marketing"]
 const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
 
 
@@ -978,6 +979,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState('');
   const [currentRole, setCurrentRole] = useState('');
   const [screenWrapper, setScreenWrapper] = useState('5%');
+
+
+
   function setModalOpenToTrueAndPassUserName(name) {
     setModalOpen(true);
     setCurrentUser(name);
@@ -1005,6 +1009,15 @@ function App() {
 
 
 
+  //refference to the current project
+  const projectDocRef = doc(db, "projects", recievedData.projectKey)
+
+
+  useEffect(() => {
+
+  }, [])
+
+
   return (
     <>
       <div style={{ transition: "0.3s ease", marginLeft: screenWrapper, position: "relative", flexDirection: 'row' }}>
@@ -1023,7 +1036,9 @@ function App() {
 
         }
 
-        <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black" }}>RAQ DEVELOPMENT HQ</motion.h1>
+        <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className='Contributors' style={{ border: "4px solid black", textTransform: 'uppercase' }}>
+          {recievedData.projectName + " "}
+          DEVELOPMENT HQ</motion.h1>
         <motion.p initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ fontSize: 20, fontWeight: "bold" }}>contribute daily updates by text and images! </motion.p>
 
 
