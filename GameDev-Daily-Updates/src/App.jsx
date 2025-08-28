@@ -18,6 +18,7 @@ import { db } from '../src/config/firebase';
 
 
 
+
 const date = new Date().toLocaleDateString();
 
 
@@ -60,6 +61,8 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => {
       onClose();
     }
   };
+
+
 
   return (
     <AnimatePresence>
@@ -198,6 +201,76 @@ const MyModal = ({ isOpen, onClose, children, currentUser }) => {
 const MyModal2 = ({ isOpen, onClose, children }) => {
   const modalRef = useRef(null);
   const textAreaRef = useRef(null);
+  const [currentUpdatesText, setCurrentUpdatesText] = useState("")
+  const [currentUpdateSelectedUser, setCurrentUpdateSelectedUser] = useState("")
+  const [currentUpdateUpdateCategory, setCurrentUpdateUpdateCategory] = useState("")
+  const currentLocation = useLocation();
+  const recievedData = currentLocation.state;
+
+  async function submitUpdate() {
+    try {
+      const projectsDocRef = doc(db, "projects", recievedData.projectKey);
+      const docSnap = await getDoc(projectsDocRef);
+
+      if (currentUpdatesText == "") {
+        alert("Empty Update Text")
+      }
+      else if (currentUpdateSelectedUser == "") {
+        alert("Empty User Chosen")
+      }
+      else if (currentUpdateUpdateCategory == "") {
+        alert("Empty Update Chosen")
+      }
+      else {
+
+        if (docSnap.exists()) {
+
+          const projectData = docSnap.data();
+          const userEmail = auth.currentUser.email;
+
+          const userIndex = projectData.ListOfDevelopersEmails.indexOf(userEmail)
+
+          if (userIndex !== -1) {
+
+            const currentCollection = {
+              user: currentUpdateSelectedUser,
+              text: currentUpdatesText,
+              category: currentUpdateUpdateCategory,
+              date: date
+
+            }
+
+            await updateDoc(projectsDocRef, {
+              UsersUpdates: arrayUnion(currentCollection),
+            })
+
+            alert("Update Successful")
+            onClose();
+          }
+          else {
+            alert("User not found in the developer list.");
+          }
+
+
+        }
+
+      }
+
+
+
+    }
+    catch (error) {
+      console.log(error)
+
+    }
+    finally {
+      onClose();
+      //show a small "Update submitted" popup
+    }
+
+  }
+
+
 
   useEffect(() => {
     if (isOpen && modalRef.current) {
@@ -305,6 +378,7 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
               <textarea
                 ref={textAreaRef}
                 placeholder="Enter your update details here..."
+                onChange={(e) => setCurrentUpdatesText(e.target.value)}
                 style={{
                   flex: 1,
                   background: "rgba(255, 255, 255, 0.1)",
@@ -324,16 +398,17 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
             <motion.div style={{ paddingTop: "10px", padding: "0.5rem", left: "49%", top: "-97%", position: "relative", justifyContent: "space-evenly", display: "flex", background: "rgba(0,0,0,0.9)", width: "49%", borderRadius: 25 }}>
 
 
-              <motion.select style={{
-                position: "relative",
-                background: "rgba(0,0,0,1)",
-                borderRadius: 25,
-                padding: "10px",
+              <motion.select onChange={(e) => setCurrentUpdateUpdateCategory(e.target.value)}
 
-                fontWeight: "bold"
+                style={{
+                  position: "relative",
+                  background: "rgba(0,0,0,1)",
+                  borderRadius: 25,
+                  padding: "10px",
+                  fontWeight: "bold",
 
 
-              }}>
+                }}>
                 <option style={{ fontWeight: "bold" }} value="CATEGORY">CATEGORY</option>
                 <option style={{ fontWeight: "bold" }} value="VFX">VFX</option>
                 <option style={{ fontWeight: "bold" }} value="Animations">Animations</option>
@@ -345,22 +420,24 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
 
 
 
-              <motion.select style={{
-                position: "relative",
-                background: "rgba(0,0,0,1)",
-                borderRadius: 25,
-                padding: "10px",
-                fontWeight: "bold"
+              <motion.select
+                onChange={(e) => setCurrentUpdateSelectedUser(e.target.value)}
+                style={{
+                  position: "relative",
+                  background: "rgba(0,0,0,1)",
+                  borderRadius: 25,
+                  padding: "10px",
+                  fontWeight: "bold"
 
 
-              }}>
+                }}>
+
+
                 <option style={{ fontWeight: "bold" }} value="NAME">DEV NAME</option>
-                <option style={{ fontWeight: "bold" }} value="Red">Red</option>
-                <option style={{ fontWeight: "bold" }} value="Tripp">Tripp</option>
-                <option style={{ fontWeight: "bold" }} value="Mag">Mag</option>
-                <option style={{ fontWeight: "bold" }} value="Fuze">Fuze</option>
-                <option style={{ fontWeight: "bold" }} value="Kirin">Kirin</option>
-                <option style={{ fontWeight: "bold" }} value="Rail">Rail</option>
+
+                {
+
+                }
               </motion.select>
 
 
@@ -400,7 +477,7 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
               </div>
             </motion.div>
 
-            <motion.button whileHover={{ scale: 1.05 }} style={{
+            <motion.button whileHover={{ scale: 1.05 }} onClick={() => submitUpdate()} style={{
               width: 500,
               bottom: "92%",
               left: "0%",
@@ -577,7 +654,7 @@ const MyModal3 = ({ isOpen, onClose, children }) => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginBottom: "8px"
+                    marginBottom: "8px",
                   }}>
                     <h3 style={{ margin: 0, color: "#4CAF50" }}>{update.date}</h3>
                     <h3 style={{ margin: 0, color: "#fff" }}>{update.name}</h3>
@@ -923,7 +1000,7 @@ const MyModal4 = ({ isOpen, onClose, children, currentRole }) => {
 
 
 
-const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing", "Marketing"]
+const roles = ["VFX", "Scripting", "Animating", "Sound Design", "Building", "3D Modeling", "Testing"]
 const names = ["Red", "Rail", "Tripp", "Kirin", "Mag", "Fuze"]
 
 
@@ -966,6 +1043,7 @@ const developers = [
   }
 ];
 
+
 function App() {
   const currentLocation = useLocation();
   const recievedData = currentLocation.state;
@@ -979,7 +1057,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState('');
   const [currentRole, setCurrentRole] = useState('');
   const [screenWrapper, setScreenWrapper] = useState('5%');
+  const [userData, setUserData] = useState([]);
 
+  const projectDocRef = doc(db, "projects", recievedData.projectKey)
 
 
   function setModalOpenToTrueAndPassUserName(name) {
@@ -1007,10 +1087,89 @@ function App() {
   }
 
 
+  async function updateToDoList() {
+    const projectDocSnap = await getDoc(projectDocRef);
+    let currentToDoList = []
 
+    if (projectDocSnap.exists()) {
+
+
+      switch (currentRole) {
+        case "VFX":
+          {
+
+          }
+        case "Scripting":
+          {
+
+          }
+        case "Animating":
+          {
+
+          }
+        case "Sound Design":
+          {
+
+          }
+        case "Building":
+          {
+
+          }
+        case "3D Modeling":
+          {
+
+          }
+        case "Testing":
+          {
+
+          }
+      }
+
+
+    }
+
+
+
+  }
+
+  async function updateUsersUpdates(update) {
+    try {
+      const projectDocSnap = await getDoc(projectDocRef);
+
+      if (projectDocSnap.exists()) {
+        const projectData = projectDocSnap.data();
+
+
+        //find the index at which the current users email is located IMPORTANT
+        let indexOfCurrentDevEmail = 0;
+        for (let i = 0; i < projectData.ListOfDevelopersEmails.length; i++) {
+          if (projectData.ListOfDevelopersEmails[i] == auth.currentUser.email) {
+
+            indexOfCurrentDevEmail = i;
+            break;
+          }
+        }
+
+        await updateDoc(projectDocRef, {
+          //update specific index of the userUpdates array and the index si indexOfCurrentDevEmail do userUpdates[index] = userUpdates[index] + "," + update;
+        })
+
+
+
+
+      }
+
+    } catch {
+
+    }
+
+
+
+
+
+  }
 
   //refference to the current project
-  const projectDocRef = doc(db, "projects", recievedData.projectKey)
 
 
   useEffect(() => {

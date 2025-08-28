@@ -73,7 +73,7 @@ function Login() {
 
 
         }
-    }
+    } 2
 
     const containerVariants = {
         hidden: { opacity: 0, y: 50, scale: 0.9 },
@@ -233,7 +233,7 @@ function Login() {
             borderColor: 'white',
         },
         inputFocus: {
-            borderColor: '#a855f7',
+            borderColor: '#a855a7',
             background: 'rgba(255, 255, 255, 0.2)'
         },
         passwordInput: {
@@ -399,7 +399,7 @@ function Login() {
                         Crew Create
                     </h1>
                     <p style={styles.subtitle}>
-                        Contribute and collaborate on Roblox experiences with likeminded individuals!
+                        Contribute and collaborate on experiences with likeminded individuals!
                     </p>
                 </motion.div>
 
@@ -452,7 +452,7 @@ function Login() {
                                         ...(errors.email ? styles.inputError : {}),
                                     }}
                                     onFocus={(e) => {
-                                        e.target.style.borderColor = '#a855f7'
+                                        e.target.style.borderColor = '#a855a2'
                                         e.target.style.background = 'rgba(255, 255, 255, 0.2)'
                                     }}
                                     onBlur={(e) => {
