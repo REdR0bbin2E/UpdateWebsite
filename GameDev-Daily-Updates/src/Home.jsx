@@ -20,6 +20,7 @@ function Home() {
     const [projectsData, setProjectsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [shouldRefresh, setShouldRefresh] = useState(false);
+    const [loadCounter, setLoadCounter] = useState(0)
     //dont need date hook because Im using new Date provided by react.
 
     const navigation = useNavigate();
@@ -182,6 +183,7 @@ function Home() {
 
     const fetchAndSetProjects = async () => {
         try {
+
             const userDocSnap = await getDoc(usersDocRef);
             let fetchedProjects = []; // Declare outside the if block
 
@@ -590,7 +592,16 @@ function Home() {
 
 
     if (loading == true) {
-        return <div>loading...</div>
+        return (
+            <motion.div style={{
+                width: '30px',
+                height: '30px',
+                border: '2px solid white',
+                borderTop: '2px solid transparent',
+                borderRadius: '50%'
+            }} animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />
+
+        )
     }
 
     console.log("projectsData:", projectsData);

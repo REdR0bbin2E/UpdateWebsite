@@ -36,6 +36,7 @@ export default function Sidebar() {
     const [showProfileModal, setShowProfileModal] = useState(false)
     const [projectsData, setProjectsData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [listOfNames, setListOfNames] = useState([]);
     const [listOfProjects, setListOfProjects] = useState([]);
 
 
@@ -203,8 +204,11 @@ export default function Sidebar() {
     }
 
 
-    function selectedProject(pKey, projName) {
-        const dataToPass = { projectKey: pKey, projectName: projName }
+    function selectedProject(pKey, projName, displayNamesList) {
+        for (let i = 0; i < displayNamesList.size; i++) {
+            setListOfNames[i] = displayNamesList[i]
+        }
+        const dataToPass = { projectKey: pKey, projectName: projName, developerDisplayNames: displayNamesList }
         navigation(`/app/${projName}`, { state: dataToPass })
     }
 
@@ -330,7 +334,7 @@ export default function Sidebar() {
                                             {projectsData.map((project) => (
                                                 <motion.button
                                                     key={project.id}
-                                                    onClick={() => selectedProject(project.id, project.ProjectName.replace(/\s+/g, "-"))}
+                                                    onClick={() => selectedProject(project.id, project.ProjectName.replace(/\s+/g, "-"), project.ListOfDevelopersDisplayName)}
                                                     className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/30 hover:border-slate-500/50"
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}

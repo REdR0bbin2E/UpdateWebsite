@@ -15,11 +15,13 @@ import PurpTrippImage from '../src/assets/Roblox-avatars/PurpTrippT.webp'
 import { getDocs, collection, addDoc, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore'
 import { auth } from '../src/config/firebase'
 import { db } from '../src/config/firebase';
+import { CheckCircle } from 'lucide-react'
 
 
 
 
 const date = new Date().toLocaleDateString();
+
 
 
 //getting data passed from user when the user attempts to navigate to the home page
@@ -205,10 +207,12 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
   const [currentUpdateSelectedUser, setCurrentUpdateSelectedUser] = useState("")
   const [currentUpdateUpdateCategory, setCurrentUpdateUpdateCategory] = useState("")
   const currentLocation = useLocation();
+
   const recievedData = currentLocation.state;
 
   async function submitUpdate() {
     try {
+
       const projectsDocRef = doc(db, "projects", recievedData.projectKey);
       const docSnap = await getDoc(projectsDocRef);
 
@@ -245,6 +249,7 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
             })
 
             alert("Update Successful")
+
             onClose();
           }
           else {
@@ -290,8 +295,11 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       onClose();
+
     }
   };
+
+
 
   return (
     <AnimatePresence>
@@ -434,10 +442,12 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
 
 
                 <option style={{ fontWeight: "bold" }} value="NAME">DEV NAME</option>
+                {isOpen && (
+                  recievedData.developerDisplayNames.map((obj, index) => {
+                    return <option style={{ fontWeight: "bold" }} value={`"${obj}"`}>{obj}</option>
+                  })
+                )}
 
-                {
-
-                }
               </motion.select>
 
 
@@ -507,6 +517,27 @@ const MyModal2 = ({ isOpen, onClose, children }) => {
 const MyModal3 = ({ isOpen, onClose, children }) => {
   const modalRef = useRef(null);
   const scrollContainerRef = useRef(null);
+
+
+  async function fetchProjectData() {
+
+    const currentLocation = useLocation();
+
+    const recievedData = currentLocation.state;
+
+    const projectsDocRef = doc(db, "projects", recievedData.projectKey);
+    const docSnap = await getDoc(projectsDocRef);
+
+
+    if (docSnap.exists()) {
+      const projectData = docSnap.data();
+    }
+
+    return projectData;
+  }
+
+  const fetchedProjectData = fetchProjectData();
+
 
   // Sample updates data - replace with your actual data
   const sampleUpdates = [
@@ -1059,6 +1090,7 @@ function App() {
   const [screenWrapper, setScreenWrapper] = useState('5%');
   const [userData, setUserData] = useState([]);
 
+
   const projectDocRef = doc(db, "projects", recievedData.projectKey)
 
 
@@ -1171,10 +1203,6 @@ function App() {
 
   //refference to the current project
 
-
-  useEffect(() => {
-
-  }, [])
 
 
   return (
